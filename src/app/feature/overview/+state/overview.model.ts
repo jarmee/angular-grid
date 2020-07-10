@@ -1,5 +1,5 @@
 export interface OverviewElement {
-  id: number;
+  id: string;
   title: string;
   type: OverviewElementType;
 }

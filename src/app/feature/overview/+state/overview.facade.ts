@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { DashboardService } from 'src/app/shared/api/dashboard.service';
+import { DashboardService } from '../../../shared/api/dashboard/dashboard.service';
 import { OverviewElements, OverviewElementType } from './overview.model';
 
 @Injectable({

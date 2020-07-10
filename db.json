@@ -8,5 +8,22 @@
     { "id": 6, "title": "Mein Kanban Board" },
     { "id": 7, "title": "Mein Dashboard" },
     { "id": 8, "title": "Mein Kanban Board" }
+  ],
+  "grid": [
+    {
+      "id": 1,
+      "title": "Mein Dashboard",
+      "rows": [
+        {
+          "columns": [
+            { "size": 1 },
+            { "size": 1 },
+            { "size": 1 },
+            { "size": 5 },
+            { "size": 1 }
+          ]
+        }
+      ]
+    }
   ]
 }

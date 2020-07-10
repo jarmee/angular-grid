@@ -1,1 +1,10 @@
-<p>dashboard-view works!</p>
+<ng-container *ngIf="dashboard$ | async as dashboard">
+  <app-grid>
+    <h2 class="my-4">{{ dashboard.title }}</h2>
+    <app-row *ngFor="let row of dashboard.rows">
+      <app-column *ngFor="let column of row.columns" [size]="column.size"
+        >test</app-column
+      >
+    </app-row>
+  </app-grid>
+</ng-container>
