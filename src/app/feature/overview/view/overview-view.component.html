@@ -1,0 +1,15 @@
+<div class="d-flex mx-4">
+  <div class="card p-2 m-2 c-pointer overview-element-width">
+    <h5 class="card-title">Create New</h5>
+  </div>
+  <div
+    class="card p-2 m-2 c-pointer overview-element-width"
+    *ngFor="let element of elements$ | async; trackBy: trackById"
+    (click)="onSelect(element.id)"
+  >
+    <h5 class="card-title">{{ element.title }}</h5>
+    <div class="card-body">
+      <span class="badge badge-light">Dashboard</span>
+    </div>
+  </div>
+</div>

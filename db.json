@@ -1,3 +1,12 @@
 {
-  "dashboards": []
+  "dashboard": [
+    { "id": 1, "title": "Mein Dashboard" },
+    { "id": 2, "title": "Mein Kanban Board" },
+    { "id": 3, "title": "Mein Dashboard" },
+    { "id": 4, "title": "Mein Kanban Board" },
+    { "id": 5, "title": "Mein Dashboard" },
+    { "id": 6, "title": "Mein Kanban Board" },
+    { "id": 7, "title": "Mein Dashboard" },
+    { "id": 8, "title": "Mein Kanban Board" }
+  ]
 }
