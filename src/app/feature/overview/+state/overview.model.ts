@@ -7,5 +7,5 @@ export interface OverviewElement {
 export type OverviewElements = OverviewElement[];
 
 export enum OverviewElementType {
-  Dashboard = 'Dashboard',
+  Dashboard = 'dashboard',
 }

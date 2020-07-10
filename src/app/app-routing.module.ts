@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
@@ -7,6 +7,13 @@ const routes: Routes = [
     loadChildren: () =>
       import('./feature/overview/feature-overview.module').then(
         (m) => m.FeatureOverviewModule
+      ),
+  },
+  {
+    path: 'element/dashboard',
+    loadChildren: () =>
+      import('./feature/dashboard/feautre-dashboard.module').then(
+        (m) => m.FeautreDashboardModule
       ),
   },
 ];

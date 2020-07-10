@@ -1,15 +1,21 @@
-<div class="d-flex mx-4">
-  <div class="card p-2 m-2 c-pointer overview-element-width">
-    <h5 class="card-title">Create New</h5>
-  </div>
-  <div
-    class="card p-2 m-2 c-pointer overview-element-width"
-    *ngFor="let element of elements$ | async; trackBy: trackById"
-    (click)="onSelect(element.id)"
-  >
-    <h5 class="card-title">{{ element.title }}</h5>
-    <div class="card-body">
-      <span class="badge badge-light">Dashboard</span>
+<div class="vh-100 mx-4">
+  <h2>Overview</h2>
+  <hr />
+  <section class="d-flex flex-row flex-nowrap">
+    <div class="card shadow mr-2 c-pointer overview-element-width">
+      <div class="card-body p-2">
+        <h6 class="card-title text-truncate">Create New</h6>
+      </div>
     </div>
-  </div>
+    <div
+      class="card p-0 shadow mr-2 c-pointer overview-element-width"
+      *ngFor="let element of elements$ | async; trackBy: trackById"
+      (click)="onSelect(element.type, element.id)"
+    >
+      <div class="card-body p-2">
+        <h6 class="card-title text-truncate">{{ element.title }}</h6>
+        <span class="badge badge-success">Dashboard</span>
+      </div>
+    </div>
+  </section>
 </div>

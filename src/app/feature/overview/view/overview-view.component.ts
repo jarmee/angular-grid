@@ -16,8 +16,8 @@ export class OverviewViewComponent {
   trackById(element: OverviewElement) {
     return element.id;
   }
-  onSelect(id: number) {
-    this.router.navigate(['element', id]);
+  onSelect(type: string, id: number) {
+    this.router.navigate(['element', type, id]);
   }
 }
 
