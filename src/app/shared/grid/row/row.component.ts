@@ -1,4 +1,5 @@
-import { Component, NgModule, ViewEncapsulation } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Component, Input, NgModule, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-row',
@@ -6,10 +7,21 @@ import { Component, NgModule, ViewEncapsulation } from '@angular/core';
   styleUrls: ['./row.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class RowComponent {}
+export class RowComponent {
+  @Input()
+  editable: boolean;
+
+  @Input()
+  title: string;
+
+  get hasTitle(): boolean {
+    return !!this.title;
+  }
+}
 
 @NgModule({
   declarations: [RowComponent],
   exports: [RowComponent],
+  imports: [CommonModule],
 })
 export class RowModule {}

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { Column, Columns, Rows } from 'src/app/shared/api/grid/grid.model';
 import { DashboardFacade } from '../+state/dashboard.facade';
 import { Dashboard } from '../+state/dashboard.model';
 import { SharedGridModule } from '../../../shared/grid/shared-grid.module';
@@ -14,14 +14,32 @@ import { DashboardViewElementModule } from './element/dashboard-view-element.com
   styleUrls: ['./dashboard-view.component.scss'],
 })
 export class DashboardViewComponent {
-  dashboard$: Observable<Dashboard> = this.activatedRoute.paramMap.pipe(
-    map((paramMap) => paramMap.get('id')),
-    mergeMap((id) => this.facade.getById(id))
-  );
+  dashboard$: Observable<Dashboard> = this.facade.dashboard$;
+  isEditable = false;
   constructor(
-    private activatedRoute: ActivatedRoute,
-    private facade: DashboardFacade
-  ) {}
+    private facade: DashboardFacade,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.facade.loadById(this.activatedRoute.snapshot.paramMap.get('id'));
+  }
+
+  rows(rows: Rows) {
+    console.log(Object.values(rows));
+    return Object.values(rows);
+  }
+
+  columns(columns: Columns) {
+    console.log(Object.values(columns));
+    return Object.values(columns);
+  }
+
+  onToggleEdit() {
+    this.isEditable = !this.isEditable;
+  }
+
+  onChangeSize(rowId: string, column: Column) {
+    this.facade.updateColumn(rowId, column);
+  }
 }
 
 @NgModule({

@@ -1,4 +1,5 @@
 <div
+  class="mb-4"
   [ngClass]="{
     'col-1': isColumnOfSize(1),
     'col-2': isColumnOfSize(2),
@@ -11,8 +12,16 @@
     'col-9': isColumnOfSize(9),
     'col-10': isColumnOfSize(10),
     'col-11': isColumnOfSize(11),
-    'col-12': isColumnOfSize(12)
+    'col-12': isColumnOfSize(12),
+    'grid-row-column__editable': editable
   }"
 >
+  <ng-container *ngIf="isEditable">
+    <div class="d-flex flex-row-reverse">
+      <button (click)="onDecrease()" type="button" class="btn">
+        ...
+      </button>
+    </div>
+  </ng-container>
   <ng-content></ng-content>
 </div>

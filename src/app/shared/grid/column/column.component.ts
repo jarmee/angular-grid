@@ -1,5 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  NgModule,
+  Output,
+  ViewEncapsulation,
+} from '@angular/core';
+import { Column } from '../../api/grid/grid.model';
 
 @Component({
   selector: 'app-column',
@@ -9,10 +17,28 @@ import { Component, Input, NgModule, ViewEncapsulation } from '@angular/core';
 })
 export class ColumnComponent {
   @Input()
-  size: number;
+  config: Column;
+
+  @Input()
+  editable: boolean;
+
+  @Output()
+  changeSize: EventEmitter<Column> = new EventEmitter<Column>();
+
+  get isEditable(): boolean {
+    return this.editable;
+  }
 
   isColumnOfSize(expected: number): boolean {
-    return this.size === expected;
+    return this.config?.size === expected;
+  }
+
+  onDecrease() {
+    this.changeSize.emit({ ...this.config, size: this.config.size - 1 });
+  }
+
+  onIncrease() {
+    this.changeSize.emit({ ...this.config, size: this.config.size + 1 });
   }
 }
 

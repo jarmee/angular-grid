@@ -1,9 +1,27 @@
 <ng-container *ngIf="dashboard$ | async as dashboard">
   <app-grid>
-    <h2 class="my-4">{{ dashboard.title }}</h2>
-    <app-row *ngFor="let row of dashboard.rows">
-      <app-column *ngFor="let column of row.columns" [size]="column.size">
-        <app-dashboard-view-element></app-dashboard-view-element>
+    <h2 class="my-4">
+      {{ dashboard.title
+      }}<button class="btn" type="edit" (click)="onToggleEdit()">
+        ...
+      </button>
+    </h2>
+    <app-row
+      *ngFor="let row of rows(dashboard.rows)"
+      [title]="row.title"
+      [editable]="isEditable"
+    >
+      <app-column
+        class="dashboard-view-element__height"
+        *ngFor="let column of columns(row.columns)"
+        [editable]="isEditable"
+        [config]="column"
+        (changeSize)="onChangeSize(row.id, $event)"
+      >
+        <app-dashboard-view-element
+          class="d-block dashboard-view-element__height"
+          [editable]="isEditable"
+        ></app-dashboard-view-element>
       </app-column>
     </app-row>
   </app-grid>

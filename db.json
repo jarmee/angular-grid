@@ -13,17 +13,35 @@
     {
       "id": 1,
       "title": "Mein Dashboard",
-      "rows": [
-        {
-          "columns": [{ "size": 3 }, { "size": 3 }]
+      "rows": {
+        "1": {
+          "id": 1,
+          "columns": {
+            "1": { "id": 1, "size": 3 },
+            "2": { "id": 2, "size": 3 }
+          }
         },
-        {
-          "columns": [{ "size": 6 }, { "size": 6 }]
+        "2": {
+          "id": 2,
+          "title": "Produktion",
+          "columns": {
+            "1": { "id": 1, "size": 6 },
+            "2": { "id": 2, "size": 6 },
+            "3": { "id": 3, "size": 4 },
+            "4": { "id": 4, "size": 4 },
+            "5": { "id": 5, "size": 4 }
+          }
         },
-        {
-          "columns": [{ "size": 4 }, { "size": 4 }, { "size": 4 }]
+        "3": {
+          "id": 3,
+          "title": "Vertrieb",
+          "columns": {
+            "1": { "id": 1, "size": 4 },
+            "2": { "id": 2, "size": 4 },
+            "3": { "id": 3, "size": 4 }
+          }
         }
-      ]
+      }
     }
   ]
 }
