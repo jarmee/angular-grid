@@ -2,13 +2,13 @@
   <h2>Overview</h2>
   <hr />
   <section class="d-flex flex-row flex-nowrap">
-    <div class="card shadow mr-2 c-pointer overview-element-width">
+    <div class="card shadow mr-2 c-pointer overview-element__width">
       <div class="card-body p-2">
         <h6 class="card-title text-truncate">Create New</h6>
       </div>
     </div>
     <div
-      class="card p-0 shadow mr-2 c-pointer overview-element-width"
+      class="card p-0 shadow mr-2 c-pointer overview-element__width"
       *ngFor="let element of elements$ | async; trackBy: trackById"
       (click)="onSelect(element.type, element.id)"
     >

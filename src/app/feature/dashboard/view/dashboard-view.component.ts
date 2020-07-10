@@ -6,6 +6,7 @@ import { map, mergeMap } from 'rxjs/operators';
 import { DashboardFacade } from '../+state/dashboard.facade';
 import { Dashboard } from '../+state/dashboard.model';
 import { SharedGridModule } from '../../../shared/grid/shared-grid.module';
+import { DashboardViewElementModule } from './element/dashboard-view-element.component';
 
 @Component({
   selector: 'app-dashboard-view',
@@ -25,7 +26,7 @@ export class DashboardViewComponent {
 
 @NgModule({
   declarations: [DashboardViewComponent],
-  imports: [CommonModule, SharedGridModule],
+  imports: [CommonModule, SharedGridModule, DashboardViewElementModule],
   exports: [DashboardViewComponent],
 })
 export class DashboardViewModule {}

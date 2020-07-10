@@ -2,9 +2,9 @@
   <app-grid>
     <h2 class="my-4">{{ dashboard.title }}</h2>
     <app-row *ngFor="let row of dashboard.rows">
-      <app-column *ngFor="let column of row.columns" [size]="column.size"
-        >test</app-column
-      >
+      <app-column *ngFor="let column of row.columns" [size]="column.size">
+        <app-dashboard-view-element></app-dashboard-view-element>
+      </app-column>
     </app-row>
   </app-grid>
 </ng-container>
