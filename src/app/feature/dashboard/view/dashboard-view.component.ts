@@ -1,4 +1,4 @@
-import { CdkDrag, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -18,10 +18,6 @@ export class DashboardViewComponent {
   dashboard$: Observable<Dashboard> = this.facade.dashboard$;
 
   isEditable = false;
-
-  dropListEnterPredicate = (drag: CdkDrag, drop: CdkDropList) => {
-    console.log(drag, drop);
-  };
 
   constructor(
     private facade: DashboardFacade,
