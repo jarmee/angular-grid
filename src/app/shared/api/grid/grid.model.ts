@@ -1,5 +1,6 @@
 export interface Column {
   id: string;
+  title: string;
   size: number;
 }
 export type Columns = { [id: string]: Column }[];

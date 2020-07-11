@@ -16,12 +16,16 @@
     'grid-row-column__editable': editable
   }"
 >
-  <ng-container *ngIf="isEditable">
-    <div class="d-flex flex-row-reverse">
-      <button (click)="onDecrease()" type="button" class="btn">
-        ...
-      </button>
-    </div>
-  </ng-container>
+  <div class="d-flex flex-row">
+    <h6 class="text-secondary">{{ config?.title }}&nbsp;</h6>
+    <button
+      *ngIf="isEditable"
+      (click)="onDecrease()"
+      type="button"
+      class="btn btn-sm"
+    >
+      ...
+    </button>
+  </div>
   <ng-content></ng-content>
 </div>

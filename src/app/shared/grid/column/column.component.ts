@@ -29,6 +29,10 @@ export class ColumnComponent {
     return this.editable;
   }
 
+  get hasTitle(): boolean {
+    return !!this.config?.title;
+  }
+
   isColumnOfSize(expected: number): boolean {
     return this.config?.size === expected;
   }

@@ -34,7 +34,6 @@ export class DashboardFacade implements OnDestroy {
   >(initialState);
 
   dashboard$: Observable<Dashboard> = this.state$.pipe(
-    tap(console.log),
     map((state) => state.dashboard)
   );
 
