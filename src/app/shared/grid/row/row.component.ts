@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, NgModule, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  HostBinding,
+  Input,
+  NgModule,
+  ViewEncapsulation,
+} from '@angular/core';
 
 @Component({
   selector: 'app-row',
@@ -8,6 +14,8 @@ import { Component, Input, NgModule, ViewEncapsulation } from '@angular/core';
   encapsulation: ViewEncapsulation.None,
 })
 export class RowComponent {
+  @HostBinding('class.row') row = true;
+
   @Input()
   editable: boolean;
 

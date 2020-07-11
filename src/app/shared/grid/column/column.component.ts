@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
+  HostBinding,
   Input,
   NgModule,
+  OnInit,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
@@ -15,7 +17,22 @@ import { Column } from '../../api/grid/grid.model';
   styleUrls: ['./column.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ColumnComponent {
+export class ColumnComponent implements OnInit {
+  @HostBinding('class.d-block') displayBlock = true;
+  @HostBinding('class.mb-4') marginBottom4 = true;
+  @HostBinding('class.col-1') cssClassColumnSize1 = false;
+  @HostBinding('class.col-2') cssClassColumnSize2 = false;
+  @HostBinding('class.col-3') cssClassColumnSize3 = false;
+  @HostBinding('class.col-4') cssClassColumnSize4 = false;
+  @HostBinding('class.col-5') cssClassColumnSize5 = false;
+  @HostBinding('class.col-6') cssClassColumnSize6 = false;
+  @HostBinding('class.col-7') cssClassColumnSize7 = false;
+  @HostBinding('class.col-8') cssClassColumnSize8 = false;
+  @HostBinding('class.col-9') cssClassColumnSize9 = false;
+  @HostBinding('class.col-10') cssClassColumnSize10 = false;
+  @HostBinding('class.col-11') cssClassColumnSize11 = false;
+  @HostBinding('class.col-12') cssClassColumnSize12 = false;
+
   @Input()
   config: Column;
 
@@ -31,6 +48,21 @@ export class ColumnComponent {
 
   get hasTitle(): boolean {
     return !!this.config?.title;
+  }
+
+  ngOnInit() {
+    this.cssClassColumnSize1 = this.isColumnOfSize(1);
+    this.cssClassColumnSize2 = this.isColumnOfSize(2);
+    this.cssClassColumnSize3 = this.isColumnOfSize(3);
+    this.cssClassColumnSize4 = this.isColumnOfSize(4);
+    this.cssClassColumnSize5 = this.isColumnOfSize(5);
+    this.cssClassColumnSize6 = this.isColumnOfSize(6);
+    this.cssClassColumnSize7 = this.isColumnOfSize(7);
+    this.cssClassColumnSize8 = this.isColumnOfSize(8);
+    this.cssClassColumnSize9 = this.isColumnOfSize(9);
+    this.cssClassColumnSize10 = this.isColumnOfSize(10);
+    this.cssClassColumnSize11 = this.isColumnOfSize(11);
+    this.cssClassColumnSize12 = this.isColumnOfSize(12);
   }
 
   isColumnOfSize(expected: number): boolean {

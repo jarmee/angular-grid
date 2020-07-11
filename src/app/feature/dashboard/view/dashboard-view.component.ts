@@ -1,3 +1,4 @@
+import { CdkDrag, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
@@ -15,7 +16,13 @@ import { DashboardViewElementModule } from './element/dashboard-view-element.com
 })
 export class DashboardViewComponent {
   dashboard$: Observable<Dashboard> = this.facade.dashboard$;
+
   isEditable = false;
+
+  dropListEnterPredicate = (drag: CdkDrag, drop: CdkDropList) => {
+    console.log(drag, drop);
+  };
+
   constructor(
     private facade: DashboardFacade,
     private activatedRoute: ActivatedRoute
@@ -25,6 +32,10 @@ export class DashboardViewComponent {
 
   rows(rows: Rows) {
     return Object.values(rows);
+  }
+
+  trackById(itemWithId: { id: string }) {
+    return itemWithId.id;
   }
 
   columns(columns: Columns) {
@@ -42,7 +53,12 @@ export class DashboardViewComponent {
 
 @NgModule({
   declarations: [DashboardViewComponent],
-  imports: [CommonModule, SharedGridModule, DashboardViewElementModule],
+  imports: [
+    CommonModule,
+    SharedGridModule,
+    DashboardViewElementModule,
+    DragDropModule,
+  ],
   exports: [DashboardViewComponent],
 })
 export class DashboardViewModule {}
