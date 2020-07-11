@@ -24,12 +24,10 @@ export class DashboardViewComponent {
   }
 
   rows(rows: Rows) {
-    console.log(Object.values(rows));
     return Object.values(rows);
   }
 
   columns(columns: Columns) {
-    console.log(Object.values(columns));
     return Object.values(columns);
   }
 
