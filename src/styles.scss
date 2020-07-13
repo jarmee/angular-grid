@@ -4,6 +4,9 @@
 .c-pointer {
   cursor: pointer;
 }
+.c-move {
+  cursor: move;
+}
 .text-grey-100 {
   color: $grey-100;
 }
@@ -34,6 +37,37 @@
 .text-grey-10 {
   color: $grey-10;
 }
+.bg-grey-100 {
+  background: $grey-100 !important;
+}
+.bg-grey-90 {
+  background: $grey-90 !important;
+}
+.bg-grey-80 {
+  background: $grey-80 !important;
+}
+.bg-grey-70 {
+  background: $grey-70 !important;
+}
+.bg-grey-60 {
+  background: $grey-60 !important;
+}
+.bg-grey-50 {
+  background: $grey-50 !important;
+}
+.bg-grey-40 {
+  background: $grey-40 !important;
+}
+.bg-grey-30 {
+  background: $grey-30 !important;
+}
+.bg-grey-20 {
+  background: $grey-20 !important;
+}
+.bg-grey-10 {
+  background: $grey-10 !important;
+}
 .outline-none {
-  outline: none;
+  outline: none !important;
+  box-shadow: none !important;
 }

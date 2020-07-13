@@ -1,5 +1,5 @@
 <ng-container *ngIf="hasTitle || isEditable">
-  <div class="col-12 border-bottom mt-4">
+  <div class="col-12 border-bottom mt-3 mb-3">
     <ng-container *ngIf="isEditable; else showTitle">
       <form>
         <input
@@ -16,3 +16,10 @@
   </div>
 </ng-container>
 <ng-content></ng-content>
+<ng-container *ngIf="isEditable">
+  <div class="d-flex w-100 justify-content-center mt-4">
+    <button type="button" class="btn btn-primary shadow font-weight-bold">
+      <fa-icon [icon]="faPlus" class="mr-2"></fa-icon>Add Row
+    </button>
+  </div>
+</ng-container>

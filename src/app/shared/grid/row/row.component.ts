@@ -6,6 +6,8 @@ import {
   NgModule,
   ViewEncapsulation,
 } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-row',
@@ -22,6 +24,8 @@ export class RowComponent {
   @Input()
   title: string;
 
+  faPlus = faPlus;
+
   get hasTitle(): boolean {
     return !!this.title;
   }
@@ -34,6 +38,6 @@ export class RowComponent {
 @NgModule({
   declarations: [RowComponent],
   exports: [RowComponent],
-  imports: [CommonModule],
+  imports: [CommonModule, FontAwesomeModule],
 })
 export class RowModule {}

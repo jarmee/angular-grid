@@ -1,9 +1,9 @@
 <ng-container *ngIf="dashboard$ | async as dashboard">
-  <app-grid>
+  <app-grid class="mb-5 d-block">
     <h2 class="my-4">
       {{ dashboard.title
       }}<button class="btn" type="edit" (click)="onToggleEdit()">
-        ...
+        <fa-icon class="text-secondary" [icon]="faPen"></fa-icon>
       </button>
     </h2>
     <app-row

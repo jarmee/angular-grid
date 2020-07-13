@@ -2,6 +2,8 @@ import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { Component, NgModule } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { Observable } from 'rxjs';
 import { Column, Row } from 'src/app/shared/api/grid/grid.model';
 import { DashboardFacade } from '../+state/dashboard.facade';
@@ -19,6 +21,7 @@ const CSS_CLASS_NAME_DROP_ZONE = 'app-column-show-as-drop-zone';
 })
 export class DashboardViewComponent {
   dashboard$: Observable<Dashboard> = this.facade.dashboard$;
+  faPen = faPen;
 
   isEditable = false;
 
@@ -86,6 +89,7 @@ export class DashboardViewComponent {
     SharedGridModule,
     DashboardViewElementModule,
     DragDropModule,
+    FontAwesomeModule,
   ],
   exports: [DashboardViewComponent],
 })

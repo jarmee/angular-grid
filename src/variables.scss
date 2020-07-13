@@ -11,9 +11,18 @@ $grey-10: #f3f5f7;
 $dark-font-color: #1c1e20;
 $base-font-color: #2a2d30;
 $light-font-color: #595b5d;
+$client-base-color: #4599ff;
+$client-light-color: #4ea9fe;
+$client-ultra-light-color: #e1f0ff;
+$client-bright-color: #70d0ff;
 
-$primary: #4599ff;
+/**
+* Bootstrap overrides
+*/
+$primary: $client-base-color;
 $light: $grey-10;
+$input-placeholder-color: $grey-50;
+$body-color: $base-font-color;
 
 /**
 * Dashboard Elements

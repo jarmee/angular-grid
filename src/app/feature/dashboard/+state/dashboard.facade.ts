@@ -109,7 +109,10 @@ export class DashboardFacade implements OnDestroy {
         .pipe(
           take(1),
           map(__updateColumnOrder(rowId, sourceColumn, row)),
-          tap((dashboard) => this.state$.next({ dashboard }))
+          tap((dashboard) => this.state$.next({ dashboard })),
+          mergeMap((dashboard) =>
+            this.gridService.update(dashboard.id, dashboard)
+          )
         )
         .subscribe()
     );
