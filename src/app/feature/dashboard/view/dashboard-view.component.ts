@@ -6,6 +6,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { Observable } from 'rxjs';
 import { Column, Row } from 'src/app/shared/api/grid/grid.model';
+import { DropColumnEvent } from 'src/app/shared/grid/grid-layout.component';
 import { DashboardFacade } from '../+state/dashboard.facade';
 import { Dashboard } from '../+state/dashboard.model';
 import { SharedGridModule } from '../../../shared/grid/shared-grid.module';
@@ -72,13 +73,8 @@ export class DashboardViewComponent {
     dropListElement.classList.remove(CSS_CLASS_NAME_DROP_ZONE);
   }
 
-  onRowDrop(rowId: string, dragDrop: CdkDragDrop<any>) {
-    const dropListComponent = dragDrop.container.element;
-    const dropListElement = dropListComponent.nativeElement;
-    const draggedColumn = dragDrop.item.data as Column;
-    const columnDroppedOn = dragDrop.container.data as Column;
-    this.facade.updateColumnOrder(rowId, draggedColumn, columnDroppedOn);
-    dropListElement.classList.remove(CSS_CLASS_NAME_DROP_ZONE);
+  onDrop({ row, draggedColumn, columnDroppedOn }: DropColumnEvent) {
+    this.facade.updateColumnOrder(row.id, draggedColumn, columnDroppedOn);
   }
 }
 

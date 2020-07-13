@@ -1,0 +1,45 @@
+<ng-container *ngIf="grid; else noData">
+  <app-container class="mb-5 d-block">
+    <h2 class="my-4">
+      {{ grid.title
+      }}<button class="btn" type="edit" (click)="onToggleEdit()">
+        <fa-icon class="text-secondary" [icon]="faPen"></fa-icon>
+      </button>
+    </h2>
+    <app-row
+      *ngFor="let row of rowsOf(grid); trackBy: trackByRowId"
+      [title]="row.title"
+      [editable]="isEditable"
+      cdkDropListGroup
+    >
+      <app-column
+        class="d-block app-column__height"
+        *ngFor="let column of columnsOf(row)"
+        [editable]="isEditable"
+        [config]="column"
+        (changeSize)="onChangeSize(row, $event)"
+        cdkDropList
+        (cdkDropListEntered)="onRowEnter($event)"
+        (cdkDropListExited)="onRowExit($event)"
+        (cdkDropListDropped)="onRowDrop(row, $event)"
+        [cdkDropListData]="column"
+      >
+        <div
+          cdkDrag
+          [cdkDragData]="column"
+          [cdkDragDisabled]="!isEditable"
+          cdkDragPreviewClass="dashboard-view-element-dragging"
+        >
+          <ng-container
+            [ngTemplateOutlet]="columnTemplate"
+            [ngTemplateOutletContext]="{ column: column, editable: editable }"
+          >
+          </ng-container>
+        </div>
+      </app-column>
+    </app-row>
+  </app-container>
+</ng-container>
+<ng-template #noData>
+  No Data...
+</ng-template>

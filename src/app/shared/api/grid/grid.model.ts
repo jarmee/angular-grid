@@ -13,5 +13,6 @@ export interface Row {
 export type Rows = { [id: string]: Row };
 export interface Grid {
   id: string;
+  title: string;
   rows: Rows;
 }

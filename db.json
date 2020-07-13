@@ -44,7 +44,7 @@
             "1": {
               "title": "Freigegebene Aufträge",
               "id": "1",
-              "size": 3
+              "size": 9
             },
             "2": {
               "title": "Auftrag Status",
@@ -93,12 +93,12 @@
             }
           },
           "order": [
+            "6",
             "2",
             "1",
-            "6",
+            "4",
             "3",
-            "5",
-            "4"
+            "5"
           ]
         },
         "3": {
@@ -120,6 +120,26 @@
           },
           "order": [
             "3",
+            "2",
+            "1"
+          ]
+        },
+        "4": {
+          "id": 4,
+          "title": "Heber",
+          "columns": {
+            "1": {
+              "id": "1",
+              "title": "is the",
+              "size": 3
+            },
+            "2": {
+              "id": "2",
+              "title": "best",
+              "size": 9
+            }
+          },
+          "order": [
             "2",
             "1"
           ]
