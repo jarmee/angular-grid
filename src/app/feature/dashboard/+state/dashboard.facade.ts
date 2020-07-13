@@ -1,3 +1,4 @@
+import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, mergeMap, take, tap } from 'rxjs/operators';
@@ -18,6 +19,26 @@ function __updateColumn(rowId: string, column: Column) {
             ...dashboard.rows[rowId].columns,
             [column.id]: column,
           },
+        },
+      },
+    };
+  };
+}
+
+function __updateColumnOrder(rowId: string, source: Column, target: Column) {
+  return (dashboard: Dashboard): Dashboard => {
+    const row = dashboard.rows[rowId];
+    const columnOrder = row.order;
+    const sourceIndex = columnOrder.indexOf(source.id);
+    const targetIndex = columnOrder.indexOf(target.id);
+    moveItemInArray(columnOrder, sourceIndex, targetIndex);
+    return {
+      ...dashboard,
+      rows: {
+        ...dashboard.rows,
+        [row.id]: {
+          ...row,
+          order: columnOrder,
         },
       },
     };
@@ -76,6 +97,18 @@ export class DashboardFacade implements OnDestroy {
         .pipe(
           take(1),
           map(__updateColumn(rowId, column)),
+          tap((dashboard) => this.state$.next({ dashboard }))
+        )
+        .subscribe()
+    );
+  }
+
+  updateColumnOrder(rowId: string, sourceColumn: Column, row: Column) {
+    this.subscriptions.push(
+      this.dashboard$
+        .pipe(
+          take(1),
+          map(__updateColumnOrder(rowId, sourceColumn, row)),
           tap((dashboard) => this.state$.next({ dashboard }))
         )
         .subscribe()

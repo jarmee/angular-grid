@@ -1,12 +1,4 @@
 <div class="d-flex flex-row">
-  <h6 class="text-secondary">{{ config?.title }}&nbsp;</h6>
-  <button
-    *ngIf="isEditable"
-    (click)="onDecrease()"
-    type="button"
-    class="btn btn-sm"
-  >
-    ...
-  </button>
+  <h6 class="text-secondary text-truncate">{{ config?.title }}&nbsp;</h6>
 </div>
 <ng-content></ng-content>

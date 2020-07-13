@@ -7,19 +7,31 @@
       </button>
     </h2>
     <app-row
-      *ngFor="let row of rows(dashboard.rows); trackBy: trackById"
+      *ngFor="let row of rowsOf(dashboard); trackBy: trackByRowId"
       [title]="row.title"
       [editable]="isEditable"
+      cdkDropListGroup
     >
       <app-column
-        *ngFor="let column of columns(row.columns); trackBy: trackById"
+        class="d-block app-column__height"
+        *ngFor="let column of columnsOf(row)"
         [editable]="isEditable"
         [config]="column"
         (changeSize)="onChangeSize(row.id, $event)"
+        cdkDropList
+        (cdkDropListEntered)="onRowEnter($event)"
+        (cdkDropListExited)="onRowExit($event)"
+        (cdkDropListDropped)="onRowDrop(row.id, $event)"
+        [cdkDropListData]="column"
       >
         <app-dashboard-view-element
+          cdkDrag
+          [cdkDragData]="column"
           class="d-block dashboard-view-element__height"
           [editable]="isEditable"
+          [cdkDragDisabled]="!isEditable"
+          cdkDragPreviewClass="dashboard-view-element-dragging"
+          style="transform: translate3d(0, 0);"
         ></app-dashboard-view-element>
       </app-column>
     </app-row>

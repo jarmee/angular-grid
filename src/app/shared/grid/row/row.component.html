@@ -1,4 +1,16 @@
-<div *ngIf="hasTitle" class="mt-2 row col-12 border-bottom mb-4 mx-1">
-  <h3>{{ title }}</h3>
+<div
+  *ngIf="hasTitle || isEditable"
+  class="mt-2 row col-12 border-bottom mb-4 mx-1"
+>
+  <ng-container *ngIf="isEditable; else showTitle">
+    <input
+      type="text"
+      class="form-control bg-light border-0"
+      [value]="title || ''"
+    />
+  </ng-container>
+  <ng-template #showTitle>
+    <h3>{{ title }}</h3>
+  </ng-template>
 </div>
 <ng-content></ng-content>

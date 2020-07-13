@@ -20,18 +20,19 @@ import { Column } from '../../api/grid/grid.model';
 export class ColumnComponent implements OnInit {
   @HostBinding('class.d-block') displayBlock = true;
   @HostBinding('class.mb-4') marginBottom4 = true;
-  @HostBinding('class.col-1') cssClassColumnSize1 = false;
-  @HostBinding('class.col-2') cssClassColumnSize2 = false;
-  @HostBinding('class.col-3') cssClassColumnSize3 = false;
-  @HostBinding('class.col-4') cssClassColumnSize4 = false;
-  @HostBinding('class.col-5') cssClassColumnSize5 = false;
-  @HostBinding('class.col-6') cssClassColumnSize6 = false;
-  @HostBinding('class.col-7') cssClassColumnSize7 = false;
-  @HostBinding('class.col-8') cssClassColumnSize8 = false;
-  @HostBinding('class.col-9') cssClassColumnSize9 = false;
-  @HostBinding('class.col-10') cssClassColumnSize10 = false;
-  @HostBinding('class.col-11') cssClassColumnSize11 = false;
-  @HostBinding('class.col-12') cssClassColumnSize12 = false;
+  @HostBinding('class.col-sm-12') cssClassColumnSizeSmall12 = true;
+  @HostBinding('class.col-md-1') cssClassColumnSize1 = false;
+  @HostBinding('class.col-md-2') cssClassColumnSize2 = false;
+  @HostBinding('class.col-md-3') cssClassColumnSize3 = false;
+  @HostBinding('class.col-md-4') cssClassColumnSize4 = false;
+  @HostBinding('class.col-md-5') cssClassColumnSize5 = false;
+  @HostBinding('class.col-md-6') cssClassColumnSize6 = false;
+  @HostBinding('class.col-md-7') cssClassColumnSize7 = false;
+  @HostBinding('class.col-md-8') cssClassColumnSize8 = false;
+  @HostBinding('class.col-md-9') cssClassColumnSize9 = false;
+  @HostBinding('class.col-md-10') cssClassColumnSize10 = false;
+  @HostBinding('class.col-md-11') cssClassColumnSize11 = false;
+  @HostBinding('class.col-md-12') cssClassColumnSize12 = false;
 
   @Input()
   config: Column;

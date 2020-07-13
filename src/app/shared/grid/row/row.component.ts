@@ -25,6 +25,10 @@ export class RowComponent {
   get hasTitle(): boolean {
     return !!this.title;
   }
+
+  get isEditable(): boolean {
+    return this.editable;
+  }
 }
 
 @NgModule({
