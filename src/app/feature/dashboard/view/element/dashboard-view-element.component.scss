@@ -1,3 +1,7 @@
+@import "../../../../../variables.scss";
 :host {
   display: block;
+  .card:hover {
+    border: 1px solid $primary;
+  }
 }

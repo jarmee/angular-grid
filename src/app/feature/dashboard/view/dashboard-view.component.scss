@@ -18,7 +18,7 @@
 .app-column-show-as-drop-zone {
   border: 2px dashed silver;
   border-radius: 8px;
-  ::ng-deep h6 {
+  ::ng-deep * {
     visibility: hidden !important;
   }
   app-dashboard-view-element {

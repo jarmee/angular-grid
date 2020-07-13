@@ -19,7 +19,7 @@ import { Column } from '../../api/grid/grid.model';
 })
 export class ColumnComponent implements OnInit {
   @HostBinding('class.d-block') displayBlock = true;
-  @HostBinding('class.mb-4') marginBottom4 = true;
+  @HostBinding('class.my-3') marginTopBottom3 = true;
   @HostBinding('class.col-sm-12') cssClassColumnSizeSmall12 = true;
   @HostBinding('class.col-md-1') cssClassColumnSize1 = false;
   @HostBinding('class.col-md-2') cssClassColumnSize2 = false;
