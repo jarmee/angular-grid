@@ -13,6 +13,10 @@
   height: var(--grid-column-height);
 }
 
+.app-column-content-placeholder__height {
+  height: var(--grid-column-placeholder-height);
+}
+
 .app-column-show-as-drop-zone {
   border: 2px dashed $grey-50;
   border-radius: 8px;
@@ -34,6 +38,10 @@
     left: 0;
     right: 0;
   }
+}
+
+.view-element-dragging {
+  height: var(--grid-column-placeholder-height);
 }
 
 @keyframes zoomout {

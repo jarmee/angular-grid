@@ -1,5 +1,6 @@
 <app-grid-layout
   (dropColumn)="onDrop($event)"
+  (sizeOfColumnChanged)="onSizeOfColumnChanged($event)"
   [grid]="dashboard$ | async"
   [editable]="true"
   [columnTemplate]="columnTemplate"

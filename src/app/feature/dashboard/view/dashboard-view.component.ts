@@ -1,11 +1,14 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { Component, NgModule } from '@angular/core';
+import { Component, NgModule, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { Observable } from 'rxjs';
-import { DropColumnEvent } from 'src/app/shared/grid/grid-layout.component';
+import {
+  DropColumnEvent,
+  SizeOfColumnChanged,
+} from 'src/app/shared/grid/grid-layout.component';
 import { DashboardFacade } from '../+state/dashboard.facade';
 import { Dashboard, DashboardElement } from '../+state/dashboard.model';
 import { SharedGridModule } from '../../../shared/grid/shared-grid.module';
@@ -18,6 +21,7 @@ const CSS_CLASS_NAME_DROP_ZONE = 'app-column-show-as-drop-zone';
   selector: 'app-dashboard-view',
   templateUrl: './dashboard-view.component.html',
   styleUrls: ['./dashboard-view.component.scss'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class DashboardViewComponent {
   dashboard$: Observable<Dashboard> = this.facade.dashboard$;
@@ -38,6 +42,13 @@ export class DashboardViewComponent {
     columnDroppedOn,
   }: DropColumnEvent<DashboardElement>) {
     this.facade.updateColumnOrder(row.id, draggedColumn, columnDroppedOn);
+  }
+
+  onSizeOfColumnChanged({
+    row,
+    column,
+  }: SizeOfColumnChanged<DashboardElement>) {
+    this.facade.updateColumn(row.id, column);
   }
 }
 

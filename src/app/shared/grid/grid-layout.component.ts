@@ -12,6 +12,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { Column, Grid, Row } from '../api/grid/grid.model';
 import { ColumnModule } from './column/column.component';
+import { ColumnContentPlaceholderModule } from './column/content/placeholder/column-content-placeholder.component';
 import { ContainerModule } from './container/container.component';
 import { RowModule } from './row/row.component';
 
@@ -119,6 +120,7 @@ export class GridLayoutComponent {
     RowModule,
     ContainerModule,
     ColumnModule,
+    ColumnContentPlaceholderModule,
     DragDropModule,
     FontAwesomeModule,
   ],

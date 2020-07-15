@@ -1,0 +1,24 @@
+<div #container class="card shadow c-move h-100">
+  <div class="card-body d-flex p-0 h-100" style="height: 200px;">
+    <div
+      class="d-inline-flex flex-grow-1 justify-content-center align-items-center h-100"
+    >
+      <fa-icon
+        cdkDragHandle
+        class="text-grey-20 h1"
+        [icon]="faArrowsAlt"
+      ></fa-icon>
+    </div>
+    <div class="d-inline-flex align-items-center mr-1 c-resize" cdkDropList>
+      <fa-icon
+        cdkDrag
+        cdkDragLockAxis="x"
+        (cdkDragMoved)="onDragMove($event)"
+        (cdkDragEnded)="onDragEnded($event)"
+        cdkDragBoundary=".container"
+        class="text-grey-20"
+        [icon]="faGripLinesVertical"
+      ></fa-icon>
+    </div>
+  </div>
+</div>

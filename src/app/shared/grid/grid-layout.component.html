@@ -24,7 +24,6 @@
         *ngFor="let column of columnsOf(row)"
         [editable]="isEditable"
         [column]="column"
-        (changeSize)="onChangeSize(row, $event)"
         cdkDropList
         (cdkDropListEntered)="onRowEnter($event)"
         (cdkDropListExited)="onRowExit($event)"
@@ -36,16 +35,26 @@
           [cdkDragData]="column"
           [cdkDragDisabled]="!isEditable"
           cdkDragPreviewClass="view-element-dragging"
+          class="d-block app-column-content-placeholder__height"
         >
-          <ng-container
-            [ngTemplateOutlet]="columnTemplate"
-            [ngTemplateOutletContext]="{
-              column: column,
-              editable: isEditable,
-              item: column.item
-            }"
-          >
+          <ng-container *ngIf="isEditable; else showContent">
+            <app-column-content-placeholder
+              class="app-column-content-placeholder__height"
+              [column]="column"
+              (changeSize)="onChangeSize(row, $event)"
+            ></app-column-content-placeholder>
           </ng-container>
+          <ng-template #showContent>
+            <ng-container
+              [ngTemplateOutlet]="columnTemplate"
+              [ngTemplateOutletContext]="{
+                column: column,
+                editable: isEditable,
+                item: column.item
+              }"
+            >
+            </ng-container>
+          </ng-template>
         </div>
       </app-column>
     </app-row>

@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowsAlt } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-dashboard-view-element',
@@ -11,8 +10,6 @@ import { faArrowsAlt } from '@fortawesome/free-solid-svg-icons';
 export class DashboardViewElementComponent {
   @Input()
   editable: boolean;
-
-  faArrowsAlt = faArrowsAlt;
 
   get isEditable(): boolean {
     return this.editable;

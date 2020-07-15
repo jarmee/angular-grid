@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
-  EventEmitter,
   HostBinding,
   Input,
   NgModule,
   OnInit,
-  Output,
   ViewEncapsulation,
 } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Column } from '../../api/grid/grid.model';
 
 @Component({
@@ -43,9 +42,6 @@ export class ColumnComponent implements OnInit {
   @Input()
   showTitle: boolean;
 
-  @Output()
-  changeSize: EventEmitter<Column<any>> = new EventEmitter<Column<any>>();
-
   get isEditable(): boolean {
     return this.editable;
   }
@@ -72,19 +68,11 @@ export class ColumnComponent implements OnInit {
   isColumnOfSize(expected: number): boolean {
     return this.column?.size === expected;
   }
-
-  onDecrease() {
-    this.changeSize.emit({ ...this.column, size: this.column.size - 1 });
-  }
-
-  onIncrease() {
-    this.changeSize.emit({ ...this.column, size: this.column.size + 1 });
-  }
 }
 
 @NgModule({
   declarations: [ColumnComponent],
-  imports: [CommonModule],
+  imports: [CommonModule, FontAwesomeModule],
   exports: [ColumnComponent],
 })
 export class ColumnModule {}

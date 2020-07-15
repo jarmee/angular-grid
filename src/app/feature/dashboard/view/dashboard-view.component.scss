@@ -1,13 +1,10 @@
 @import "../../../../variables.scss";
 
-:host {
+:root {
+  --grid-column-placeholder-height: #{$dashboard-element-height};
   --grid-column-height: calc(#{$dashboard-element-height} + 28px);
 }
 
 .dashboard-view-element__height {
-  height: $dashboard-element-height;
-}
-
-.view-element-dragging {
   height: $dashboard-element-height;
 }
