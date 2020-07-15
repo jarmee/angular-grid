@@ -1,7 +1,9 @@
 import { Dashboard as InternalDashboard } from '../../../shared/api/dashboard/dashboard.model';
 import { Grid } from '../../../shared/api/grid/grid.model';
 
-export type Dashboard = InternalDashboard & Grid;
+export interface DashboardElement {}
+
+export type Dashboard = InternalDashboard & Grid<DashboardElement>;
 
 export interface DashboardState {
   dashboard: Dashboard;

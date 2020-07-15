@@ -5,9 +5,14 @@ import { map, mergeMap, take, tap } from 'rxjs/operators';
 import { DashboardService } from 'src/app/shared/api/dashboard/dashboard.service';
 import { Column } from 'src/app/shared/api/grid/grid.model';
 import { GridService } from 'src/app/shared/api/grid/grid.service';
-import { Dashboard, DashboardState, initialState } from './dashboard.model';
+import {
+  Dashboard,
+  DashboardElement,
+  DashboardState,
+  initialState,
+} from './dashboard.model';
 
-function __updateColumn(rowId: string, column: Column) {
+function __updateColumn(rowId: string, column: Column<DashboardElement>) {
   return (dashboard: Dashboard): Dashboard => {
     return {
       ...dashboard,
@@ -25,7 +30,11 @@ function __updateColumn(rowId: string, column: Column) {
   };
 }
 
-function __updateColumnOrder(rowId: string, source: Column, target: Column) {
+function __updateColumnOrder(
+  rowId: string,
+  source: Column<DashboardElement>,
+  target: Column<DashboardElement>
+) {
   return (dashboard: Dashboard): Dashboard => {
     const row = dashboard.rows[rowId];
     const columnOrder = row.order;
@@ -91,7 +100,7 @@ export class DashboardFacade implements OnDestroy {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  updateColumn(rowId: string, column: Column) {
+  updateColumn(rowId: string, column: Column<DashboardElement>) {
     this.subscriptions.push(
       this.dashboard$
         .pipe(
@@ -103,7 +112,11 @@ export class DashboardFacade implements OnDestroy {
     );
   }
 
-  updateColumnOrder(rowId: string, sourceColumn: Column, row: Column) {
+  updateColumnOrder(
+    rowId: string,
+    sourceColumn: Column<DashboardElement>,
+    row: Column<DashboardElement>
+  ) {
     this.subscriptions.push(
       this.dashboard$
         .pipe(

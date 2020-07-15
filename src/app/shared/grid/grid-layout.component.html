@@ -3,7 +3,11 @@
     <h2 class="my-4">
       {{ grid.title
       }}<button class="btn" type="edit" (click)="onToggleEdit()">
-        <fa-icon class="text-secondary" [icon]="faPen"></fa-icon>
+        <fa-icon
+          *ngIf="editable"
+          class="text-secondary"
+          [icon]="faPen"
+        ></fa-icon>
       </button>
     </h2>
     <app-row
@@ -13,10 +17,13 @@
       cdkDropListGroup
     >
       <app-column
-        class="d-block app-column__height"
+        class="d-block"
+        [ngClass]="{
+          'app-column__height': isEditable
+        }"
         *ngFor="let column of columnsOf(row)"
         [editable]="isEditable"
-        [config]="column"
+        [column]="column"
         (changeSize)="onChangeSize(row, $event)"
         cdkDropList
         (cdkDropListEntered)="onRowEnter($event)"
@@ -28,11 +35,15 @@
           cdkDrag
           [cdkDragData]="column"
           [cdkDragDisabled]="!isEditable"
-          cdkDragPreviewClass="dashboard-view-element-dragging"
+          cdkDragPreviewClass="view-element-dragging"
         >
           <ng-container
             [ngTemplateOutlet]="columnTemplate"
-            [ngTemplateOutletContext]="{ column: column, editable: editable }"
+            [ngTemplateOutletContext]="{
+              column: column,
+              editable: isEditable,
+              item: column.item
+            }"
           >
           </ng-container>
         </div>
@@ -41,5 +52,7 @@
   </app-container>
 </ng-container>
 <ng-template #noData>
-  No Data...
+  <app-container class="mb-5 d-block">
+    No Data...
+  </app-container>
 </ng-template>

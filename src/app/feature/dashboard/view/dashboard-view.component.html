@@ -1,14 +1,13 @@
-<ng-container *ngIf="dashboard$ | async as dashboard">
-  <app-grid-layout
-    (dropColumn)="onDrop($event)"
-    [grid]="dashboard"
-    [columnTemplate]="columnTemplate"
-  >
-    <ng-template #columnTemplate let-column="column" let-editable="editable">
-      <app-dashboard-view-element
-        class="d-block dashboard-view-element__height"
-        [editable]="editable"
-      ></app-dashboard-view-element>
-    </ng-template>
-  </app-grid-layout>
-</ng-container>
+<app-grid-layout
+  (dropColumn)="onDrop($event)"
+  [grid]="dashboard$ | async"
+  [editable]="true"
+  [columnTemplate]="columnTemplate"
+>
+  <ng-template #columnTemplate let-column="column" let-editable="editable">
+    <app-dashboard-view-element
+      class="d-block dashboard-view-element__height"
+      [editable]="editable"
+    ></app-dashboard-view-element>
+  </ng-template>
+</app-grid-layout>

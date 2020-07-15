@@ -19,7 +19,7 @@ import { Column } from '../../api/grid/grid.model';
 })
 export class ColumnComponent implements OnInit {
   @HostBinding('class.d-block') displayBlock = true;
-  @HostBinding('class.my-2') marginTopBottom3 = true;
+  @HostBinding('class.my-2') marginTopBottom2 = true;
   @HostBinding('class.col-sm-12') cssClassColumnSizeSmall12 = true;
   @HostBinding('class.col-md-1') cssClassColumnSize1 = false;
   @HostBinding('class.col-md-2') cssClassColumnSize2 = false;
@@ -35,20 +35,23 @@ export class ColumnComponent implements OnInit {
   @HostBinding('class.col-md-12') cssClassColumnSize12 = false;
 
   @Input()
-  config: Column;
+  column: Column<any>;
 
   @Input()
   editable: boolean;
 
+  @Input()
+  showTitle: boolean;
+
   @Output()
-  changeSize: EventEmitter<Column> = new EventEmitter<Column>();
+  changeSize: EventEmitter<Column<any>> = new EventEmitter<Column<any>>();
 
   get isEditable(): boolean {
     return this.editable;
   }
 
   get hasTitle(): boolean {
-    return !!this.config?.title;
+    return !!this.column?.title || this.isEditable;
   }
 
   ngOnInit() {
@@ -67,15 +70,15 @@ export class ColumnComponent implements OnInit {
   }
 
   isColumnOfSize(expected: number): boolean {
-    return this.config?.size === expected;
+    return this.column?.size === expected;
   }
 
   onDecrease() {
-    this.changeSize.emit({ ...this.config, size: this.config.size - 1 });
+    this.changeSize.emit({ ...this.column, size: this.column.size - 1 });
   }
 
   onIncrease() {
-    this.changeSize.emit({ ...this.config, size: this.config.size + 1 });
+    this.changeSize.emit({ ...this.column, size: this.column.size + 1 });
   }
 }
 

@@ -16,7 +16,8 @@ import { faPlus } from '@fortawesome/free-solid-svg-icons';
   encapsulation: ViewEncapsulation.None,
 })
 export class RowComponent {
-  @HostBinding('class.row') row = true;
+  @HostBinding('class.row') cssClassRow = true;
+  @HostBinding('class.align-items-end') cssClassAlignItemsEnd = true;
 
   @Input()
   editable: boolean;

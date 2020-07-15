@@ -1,4 +1,4 @@
-<div class="d-flex flex-row mb-1">
-  <small class="text-grey-50 text-truncate">{{ config?.title }}&nbsp;</small>
+<div *ngIf="hasTitle" class="d-flex flex-row mb-1">
+  <small class="text-grey-50 text-truncate">{{ column?.title }}&nbsp;</small>
 </div>
 <ng-content></ng-content>

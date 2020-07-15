@@ -1,47 +1,13 @@
 @import "../../../../variables.scss";
 
-.app-column__height {
-  height: calc(#{$dashboard-element-height} + 28px) !important;
+:host {
+  --grid-column-height: calc(#{$dashboard-element-height} + 28px);
 }
+
 .dashboard-view-element__height {
   height: $dashboard-element-height;
 }
 
-.cdk-drop-list-receiving {
-  animation: zoomout 500ms forwards;
-}
-
-.dashboard-view-element-dragging {
-  opacity: 0.6;
-}
-
-.app-column-show-as-drop-zone {
-  border: 2px dashed silver;
-  border-radius: 8px;
-  ::ng-deep * {
-    visibility: hidden !important;
-  }
-  app-dashboard-view-element {
-    visibility: hidden !important;
-  }
-  &:before {
-    content: "+";
-    position: absolute;
-    font-size: 3em;
-    color: silver;
-    left: 0;
-    right: 0;
-    text-align: center;
-    line-height: normal;
-    line-height: calc(#{$dashboard-element-height} + 28px) !important;
-  }
-}
-
-@keyframes zoomout {
-  0% {
-    transform: scale(1, 1);
-  }
-  100% {
-    transform: scale(0.95, 0.95);
-  }
+.view-element-dragging {
+  height: $dashboard-element-height;
 }

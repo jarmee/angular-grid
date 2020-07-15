@@ -1,27 +1,9 @@
-<div class="vh-100 container">
-  <h2>Overview</h2>
-  <hr />
-  <section class="row">
-    <div class="col-3 mb-3">
-      <div class="card shadow c-pointer h-100">
-        <div class="card-body p-2">
-          <h6 class="card-title text-truncate">Create New</h6>
-        </div>
+<app-grid-layout [grid]="overview$ | async" [columnTemplate]="columnTemplate">
+  <ng-template #columnTemplate let-item="item">
+    <div class="card shadow c-pointer" (click)="onSelect(item.type, item.id)">
+      <div class="card-body">
+        {{ item.title }}
       </div>
     </div>
-    <div
-      class="col-3 mb-3"
-      *ngFor="let element of elements$ | async; trackBy: trackById"
-    >
-      <div
-        class="card p-0 shadow c-pointer"
-        (click)="onSelect(element.type, element.id)"
-      >
-        <div class="card-body p-2">
-          <h6 class="card-title text-truncate">{{ element.title }}</h6>
-          <span class="badge badge-success">Dashboard</span>
-        </div>
-      </div>
-    </div>
-  </section>
-</div>
+  </ng-template>
+</app-grid-layout>

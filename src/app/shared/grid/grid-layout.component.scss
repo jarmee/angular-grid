@@ -1,22 +1,20 @@
 @import "../../../variables.scss";
 
-.app-column__height {
-  height: calc(#{$dashboard-element-height} + 28px) !important;
-}
-.dashboard-view-element__height {
-  height: $dashboard-element-height;
-}
-
 .cdk-drop-list-receiving {
   animation: zoomout 500ms forwards;
 }
 
-.dashboard-view-element-dragging {
+.view-element-dragging {
   opacity: 0.6;
+  height: var(--grid-column-height);
+}
+
+.app-column__height {
+  height: var(--grid-column-height);
 }
 
 .app-column-show-as-drop-zone {
-  border: 2px dashed silver;
+  border: 2px dashed $grey-50;
   border-radius: 8px;
   ::ng-deep * {
     visibility: hidden !important;
@@ -28,12 +26,13 @@
     content: "+";
     position: absolute;
     font-size: 3em;
-    color: silver;
+    color: $grey-50;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
     left: 0;
     right: 0;
-    text-align: center;
-    line-height: normal;
-    line-height: calc(#{$dashboard-element-height} + 28px) !important;
   }
 }
 

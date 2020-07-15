@@ -13,11 +13,11 @@ export class GridService {
     private httpClient: HttpClient
   ) {}
 
-  getById(id: string): Observable<Grid> {
-    return this.httpClient.get<Grid>(`${this.basePath}/grid/${id}`);
+  getById<T>(id: string): Observable<Grid<T>> {
+    return this.httpClient.get<Grid<T>>(`${this.basePath}/grid/${id}`);
   }
 
-  update(id: string, grid: Grid): Observable<Grid> {
-    return this.httpClient.patch<Grid>(`${this.basePath}/grid/${id}`, grid);
+  update<T>(id: string, grid: Grid<T>): Observable<Grid<T>> {
+    return this.httpClient.patch<Grid<T>>(`${this.basePath}/grid/${id}`, grid);
   }
 }

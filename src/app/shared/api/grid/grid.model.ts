@@ -1,18 +1,19 @@
-export interface Column {
+export interface Column<T> {
   id: string;
   title: string;
   size: number;
+  item: T;
 }
-export type Columns = { [id: string]: Column };
-export interface Row {
+export type Columns<T> = { [id: string]: Column<T> };
+export interface Row<T> {
   id: string;
   title: string;
-  columns: Columns;
+  columns: Columns<T>;
   order: string[];
 }
-export type Rows = { [id: string]: Row };
-export interface Grid {
+export type Rows<T> = { [id: string]: Row<T> };
+export interface Grid<T> {
   id: string;
   title: string;
-  rows: Rows;
+  rows: Rows<T>;
 }
