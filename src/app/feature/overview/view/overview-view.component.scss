@@ -1,5 +1,10 @@
-:host {
-  .overview-element__width {
-    width: 200px;
-  }
+@import "../../../../variables.scss";
+
+:root {
+  --grid-column-placeholder-height: #{$overview-element-height};
+  --grid-column-height: calc(#{$overview-element-height} + 28px);
+}
+
+.overview-element__height {
+  height: $overview-element-height;
 }

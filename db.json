@@ -64,7 +64,7 @@
             "1": {
               "title": "Freigegebene Aufträge",
               "id": "1",
-              "size": 9
+              "size": 3
             },
             "2": {
               "title": "Auftrag Status",
@@ -73,8 +73,8 @@
             }
           },
           "order": [
-            "1",
-            "2"
+            "2",
+            "1"
           ]
         },
         "2": {

@@ -1,8 +1,11 @@
 <app-grid-layout [grid]="overview$ | async" [columnTemplate]="columnTemplate">
   <ng-template #columnTemplate let-item="item">
-    <div class="card shadow c-pointer" (click)="onSelect(item.type, item.id)">
+    <div
+      class="card shadow c-pointer overview-element__height"
+      (click)="onSelect(item.type, item.id)"
+    >
       <div class="card-body">
-        {{ item.title }}
+        <h5 class="card-title">{{ item.title }}</h5>
       </div>
     </div>
   </ng-template>

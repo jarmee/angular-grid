@@ -7,4 +7,10 @@
       color: $grey-30;
     }
   }
+
+  &.dragging {
+    .card {
+      z-index: 1000 !important;
+    }
+  }
 }

@@ -9,6 +9,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostBinding,
   Input,
   NgModule,
   Output,
@@ -36,9 +37,10 @@ export class ColumnContentPlaceholderComponent implements AfterViewChecked {
   @Output()
   changeSize: EventEmitter<Column<any>> = new EventEmitter<Column<any>>();
 
-  initialWidth: number;
-
+  @HostBinding('class.dragging')
   isDragging = false;
+
+  initialWidth: number;
 
   placeholder: TemplateRef<any>;
 
@@ -50,9 +52,7 @@ export class ColumnContentPlaceholderComponent implements AfterViewChecked {
 
   ngAfterViewChecked(): void {
     if (!this.isDragging) {
-      console.log(this.elementRef.nativeElement);
       this.initialWidth = this.elementRef.nativeElement.offsetWidth;
-      console.log(this.initialWidth);
     }
   }
 
