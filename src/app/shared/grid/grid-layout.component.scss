@@ -6,7 +6,12 @@
 
 .view-element-dragging {
   height: var(--grid-column-height);
-  border: 2px solid $primary;
+  ::ng-deep .card {
+    border: 2px solid $info;
+    fa-icon {
+      color: $info;
+    }
+  }
 }
 
 .app-column__height {
