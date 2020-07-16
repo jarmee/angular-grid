@@ -12,6 +12,20 @@ import {
   initialState,
 } from './dashboard.model';
 
+function __updateRow(row: Row<DashboardElement>) {
+  return (dashboard: Dashboard): Dashboard => {
+    return {
+      ...dashboard,
+      rows: {
+        ...dashboard.rows,
+        [row.id]: {
+          ...row,
+        },
+      },
+    };
+  };
+}
+
 function __updateRowOrder(
   source: Row<DashboardElement>,
   target: Row<DashboardElement>
@@ -106,6 +120,21 @@ export class DashboardFacade implements OnDestroy {
                 this.state$.next({ dashboard: mergedDashboard })
               )
             )
+          )
+        )
+        .subscribe()
+    );
+  }
+
+  updateRow(row: Row<DashboardElement>) {
+    this.subscriptions.push(
+      this.dashboard$
+        .pipe(
+          take(1),
+          map(__updateRow(row)),
+          tap((dashboard) => this.state$.next({ dashboard })),
+          mergeMap((dashboard) =>
+            this.gridService.update(dashboard.id, dashboard)
           )
         )
         .subscribe()

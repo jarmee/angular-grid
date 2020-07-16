@@ -16,14 +16,15 @@
     </h2>
     <app-row
       *ngFor="let row of rowsOf(grid); trackBy: trackByRowId"
+      class="bg-light"
       cdkDrag
       cdkDragLockAxis="y"
       cdkDropListGroup
-      [title]="row.title"
+      [row]="row"
       [editable]="isEditable"
       [cdkDragData]="row"
       [cdkDragDisabled]="!isEditable"
-      class="bg-light"
+      (titleChanged)="onRowTitleChange($event)"
     >
       <app-column
         class="d-block"

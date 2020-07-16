@@ -9,6 +9,7 @@ import {
   DropColumnEvent,
   DropRowEvent,
   SizeOfColumnChanged,
+  TitleOfRowChanged,
 } from 'src/app/shared/grid/grid-layout.component';
 import { DashboardFacade } from '../+state/dashboard.facade';
 import { Dashboard, DashboardElement } from '../+state/dashboard.model';
@@ -39,6 +40,10 @@ export class DashboardViewComponent {
 
   onRowDrop({ draggedRow, rowDroppedOn }: DropRowEvent<DashboardElement>) {
     this.facade.updateRowOrder(draggedRow, rowDroppedOn);
+  }
+
+  onTitleOfRowChanged({ row }: TitleOfRowChanged<DashboardElement>) {
+    this.facade.updateRow(row);
   }
 
   onColumnDrop({

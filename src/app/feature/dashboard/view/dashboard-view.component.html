@@ -3,6 +3,7 @@
   [editable]="true"
   [columnTemplate]="columnTemplate"
   (dropRow)="onRowDrop($event)"
+  (titleOfRowChanged)="onTitleOfRowChanged($event)"
   (dropColumn)="onColumnDrop($event)"
   (sizeOfColumnChanged)="onSizeOfColumnChanged($event)"
 >

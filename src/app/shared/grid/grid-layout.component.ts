@@ -24,6 +24,10 @@ export interface DropRowEvent<T> {
   rowDroppedOn: Row<T>;
 }
 
+export interface TitleOfRowChanged<T> {
+  row: Row<T>;
+}
+
 export interface DropColumnEvent<T> {
   row: Row<T>;
   draggedColumn: Column<T>;
@@ -53,6 +57,11 @@ export class GridLayoutComponent {
   @Output()
   dropRow: EventEmitter<DropRowEvent<any>> = new EventEmitter<
     DropRowEvent<any>
+  >();
+
+  @Output()
+  titleOfRowChanged: EventEmitter<TitleOfRowChanged<any>> = new EventEmitter<
+    TitleOfRowChanged<any>
   >();
 
   @Output()
@@ -97,6 +106,10 @@ export class GridLayoutComponent {
       draggedRow,
       rowDroppedOn,
     });
+  }
+
+  onRowTitleChange(row: Row<any>) {
+    this.titleOfRowChanged.emit({ row });
   }
 
   onChangeSize(row: Row<any>, column: Column<any>) {
