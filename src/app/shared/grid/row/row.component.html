@@ -17,8 +17,11 @@
 </ng-container>
 <ng-content></ng-content>
 <ng-container *ngIf="isEditable">
-  <div class="d-flex w-100 justify-content-center mt-4">
-    <button type="button" class="btn btn-primary shadow font-weight-bold">
+  <div class="d-flex w-100 justify-content-center mt-5">
+    <button
+      type="button"
+      class="btn btn-info text-white shadow font-weight-bold"
+    >
       <fa-icon [icon]="faPlus" class="mr-2"></fa-icon>Add Row
     </button>
   </div>

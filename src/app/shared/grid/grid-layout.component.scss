@@ -5,8 +5,8 @@
 }
 
 .view-element-dragging {
-  opacity: 0.6;
   height: var(--grid-column-height);
+  border: 2px solid $primary;
 }
 
 .app-column__height {

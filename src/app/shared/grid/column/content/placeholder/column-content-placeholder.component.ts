@@ -12,9 +12,10 @@ import {
   HostBinding,
   Input,
   NgModule,
+  OnChanges,
   Output,
   Renderer2,
-  TemplateRef,
+  SimpleChanges,
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
@@ -25,12 +26,36 @@ import { Column } from 'src/app/shared/api/grid/grid.model';
 
 const MIN_WIDTH = 100;
 
+function __distanceInColumns(
+  initialWidth: number,
+  distanceX: number,
+  columnSize: number
+): number {
+  const columnWidth = initialWidth / columnSize;
+  return Math.round(distanceX / columnWidth);
+}
+
+function __actualColumnSize(
+  columnSize: number,
+  distanceInColumns: number
+): number {
+  const actualColumnSize = columnSize + distanceInColumns;
+  if (actualColumnSize > 12) {
+    return 12;
+  }
+  if (actualColumnSize <= 0) {
+    return 1;
+  }
+  return actualColumnSize;
+}
+
 @Component({
   selector: 'app-column-content-placeholder',
   templateUrl: './column-content-placeholder.component.html',
   styleUrls: ['./column-content-placeholder.component.scss'],
 })
-export class ColumnContentPlaceholderComponent implements AfterViewChecked {
+export class ColumnContentPlaceholderComponent
+  implements AfterViewChecked, OnChanges {
   @Input()
   column: Column<any>;
 
@@ -42,13 +67,17 @@ export class ColumnContentPlaceholderComponent implements AfterViewChecked {
 
   initialWidth: number;
 
-  placeholder: TemplateRef<any>;
+  actualColumnSize: number;
 
   faArrowsAlt = faArrowsAlt;
 
   faGripLinesVertical = faGripLinesVertical;
 
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    this.actualColumnSize = this.column.size;
+  }
 
   ngAfterViewChecked(): void {
     if (!this.isDragging) {
@@ -58,6 +87,10 @@ export class ColumnContentPlaceholderComponent implements AfterViewChecked {
 
   onDragMove(event: CdkDragMove<Column<any>>) {
     this.isDragging = true;
+    this.actualColumnSize = __actualColumnSize(
+      this.column.size,
+      __distanceInColumns(this.initialWidth, event.distance.x, this.column.size)
+    );
     const distanceX = event.distance.x;
     let newWidth = this.initialWidth + distanceX;
     if (newWidth <= MIN_WIDTH) {
@@ -72,9 +105,11 @@ export class ColumnContentPlaceholderComponent implements AfterViewChecked {
 
   onDragEnded(event: CdkDragEnd) {
     this.isDragging = false;
-    const distanceX = event.distance.x;
-    const columnWidth = this.initialWidth / this.column.size;
-    const distanceInColumns = Math.round(distanceX / columnWidth);
+    const distanceInColumns = __distanceInColumns(
+      this.initialWidth,
+      event.distance.x,
+      this.column.size
+    );
     this.renderer.removeStyle(this.elementRef.nativeElement, 'width');
     this.changeSize.emit({
       ...this.column,

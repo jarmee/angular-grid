@@ -2,15 +2,20 @@
 :host {
   display: block;
   &:hover {
-    border: 1px solid $grey-20 !important;
-    fa-icon {
-      color: $grey-30;
+    .card {
+      border: 2px solid $grey-20 !important;
+
+      fa-icon {
+        color: $grey-30;
+      }
     }
   }
 
   &.dragging {
+    z-index: 1000 !important;
     .card {
       z-index: 1000 !important;
+      border: 2px solid $info !important;
     }
   }
 }
