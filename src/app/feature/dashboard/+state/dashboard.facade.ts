@@ -3,7 +3,7 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, mergeMap, take, tap } from 'rxjs/operators';
 import { DashboardService } from 'src/app/shared/api/dashboard/dashboard.service';
-import { Column } from 'src/app/shared/api/grid/grid.model';
+import { Column, Row } from 'src/app/shared/api/grid/grid.model';
 import { GridService } from 'src/app/shared/api/grid/grid.service';
 import {
   Dashboard,
@@ -11,6 +11,24 @@ import {
   DashboardState,
   initialState,
 } from './dashboard.model';
+
+function __updateRowOrder(
+  source: Row<DashboardElement>,
+  target: Row<DashboardElement>
+) {
+  return (dashboard: Dashboard): Dashboard => {
+    const rowOrder = dashboard.order;
+    const sourceIndex = rowOrder.indexOf(source.id);
+    const targetIndex = rowOrder.indexOf(target.id);
+    console.log(sourceIndex);
+    console.log(targetIndex);
+    moveItemInArray(rowOrder, sourceIndex, targetIndex);
+    return {
+      ...dashboard,
+      order: rowOrder,
+    };
+  };
+}
 
 function __updateColumn(rowId: string, column: Column<DashboardElement>) {
   return (dashboard: Dashboard): Dashboard => {
@@ -36,8 +54,8 @@ function __updateColumnOrder(
   target: Column<DashboardElement>
 ) {
   return (dashboard: Dashboard): Dashboard => {
-    const row = dashboard.rows[rowId];
-    const columnOrder = row.order;
+    const targetColumn = dashboard.rows[rowId];
+    const columnOrder = targetColumn.order;
     const sourceIndex = columnOrder.indexOf(source.id);
     const targetIndex = columnOrder.indexOf(target.id);
     moveItemInArray(columnOrder, sourceIndex, targetIndex);
@@ -45,8 +63,8 @@ function __updateColumnOrder(
       ...dashboard,
       rows: {
         ...dashboard.rows,
-        [row.id]: {
-          ...row,
+        [targetColumn.id]: {
+          ...targetColumn,
           order: columnOrder,
         },
       },
@@ -96,8 +114,23 @@ export class DashboardFacade implements OnDestroy {
     );
   }
 
-  ngOnDestroy(): void {
-    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  updateRowOrder(
+    sourceRow: Row<DashboardElement>,
+    targetRow: Row<DashboardElement>
+  ) {
+    this.subscriptions.push(
+      this.dashboard$
+        .pipe(
+          take(1),
+          map(__updateRowOrder(sourceRow, targetRow)),
+          tap(console.log),
+          tap((dashboard) => this.state$.next({ dashboard })),
+          mergeMap((dashboard) =>
+            this.gridService.update(dashboard.id, dashboard)
+          )
+        )
+        .subscribe()
+    );
   }
 
   updateColumn(rowId: string, column: Column<DashboardElement>) {
@@ -118,13 +151,13 @@ export class DashboardFacade implements OnDestroy {
   updateColumnOrder(
     rowId: string,
     sourceColumn: Column<DashboardElement>,
-    row: Column<DashboardElement>
+    targetColumn: Column<DashboardElement>
   ) {
     this.subscriptions.push(
       this.dashboard$
         .pipe(
           take(1),
-          map(__updateColumnOrder(rowId, sourceColumn, row)),
+          map(__updateColumnOrder(rowId, sourceColumn, targetColumn)),
           tap((dashboard) => this.state$.next({ dashboard })),
           mergeMap((dashboard) =>
             this.gridService.update(dashboard.id, dashboard)
@@ -132,5 +165,9 @@ export class DashboardFacade implements OnDestroy {
         )
         .subscribe()
     );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 }

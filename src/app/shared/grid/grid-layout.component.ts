@@ -19,6 +19,11 @@ import { RowModule } from './row/row.component';
 const CSS_CLASS_NAME_DRAG_PLACEHOLDER = '.cdk-drag-placeholder';
 const CSS_CLASS_NAME_DROP_ZONE = 'app-column-show-as-drop-zone';
 
+export interface DropRowEvent<T> {
+  draggedRow: Row<T>;
+  rowDroppedOn: Row<T>;
+}
+
 export interface DropColumnEvent<T> {
   row: Row<T>;
   draggedColumn: Column<T>;
@@ -46,6 +51,11 @@ export class GridLayoutComponent {
   editable: boolean;
 
   @Output()
+  dropRow: EventEmitter<DropRowEvent<any>> = new EventEmitter<
+    DropRowEvent<any>
+  >();
+
+  @Output()
   dropColumn: EventEmitter<DropColumnEvent<any>> = new EventEmitter<
     DropColumnEvent<any>
   >();
@@ -59,8 +69,8 @@ export class GridLayoutComponent {
 
   isEditable = false;
 
-  rowsOf({ rows }: Grid<any>): Row<any>[] {
-    return Object.values<Row<any>>(rows);
+  rowsOf({ rows, order }: Grid<any>): Row<any>[] {
+    return order.map((rowsId) => rows[rowsId]);
   }
 
   trackByRowId({ id }: Row<any>) {
@@ -79,11 +89,21 @@ export class GridLayoutComponent {
     this.isEditable = !this.isEditable;
   }
 
+  onRowDrop(dragDrop: CdkDragDrop<any>) {
+    const draggedRow = dragDrop.item.data as Row<any>;
+    const droppedOnId = this.grid.order[dragDrop.currentIndex];
+    const rowDroppedOn = this.grid.rows[droppedOnId];
+    this.dropRow.emit({
+      draggedRow,
+      rowDroppedOn,
+    });
+  }
+
   onChangeSize(row: Row<any>, column: Column<any>) {
     this.sizeOfColumnChanged.emit({ row, column });
   }
 
-  onRowEnter(dragDrop: CdkDragDrop<any>) {
+  onColumnEnter(dragDrop: CdkDragDrop<any>) {
     const dropListComponent = dragDrop.container.element;
     const dropListElement = dropListComponent.nativeElement;
     const placeHolderElement = dropListElement.querySelector(
@@ -93,13 +113,13 @@ export class GridLayoutComponent {
     dropListElement.classList.add(CSS_CLASS_NAME_DROP_ZONE);
   }
 
-  onRowExit(dragDrop: CdkDragDrop<any>) {
+  onColumnExit(dragDrop: CdkDragDrop<any>) {
     const dropListComponent = dragDrop.container.element;
     const dropListElement = dropListComponent.nativeElement;
     dropListElement.classList.remove(CSS_CLASS_NAME_DROP_ZONE);
   }
 
-  onRowDrop(row: Row<any>, dragDrop: CdkDragDrop<any>) {
+  onColumnDrop(row: Row<any>, dragDrop: CdkDragDrop<any>) {
     const dropListComponent = dragDrop.container.element;
     const dropListElement = dropListComponent.nativeElement;
     const draggedColumn = dragDrop.item.data as Column<any>;

@@ -1,9 +1,10 @@
 <app-grid-layout
-  (dropColumn)="onDrop($event)"
-  (sizeOfColumnChanged)="onSizeOfColumnChanged($event)"
   [grid]="dashboard$ | async"
   [editable]="true"
   [columnTemplate]="columnTemplate"
+  (dropRow)="onRowDrop($event)"
+  (dropColumn)="onColumnDrop($event)"
+  (sizeOfColumnChanged)="onSizeOfColumnChanged($event)"
 >
   <ng-template #columnTemplate let-column="column" let-editable="editable">
     <app-dashboard-view-element

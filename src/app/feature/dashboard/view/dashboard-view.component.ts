@@ -7,6 +7,7 @@ import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { Observable } from 'rxjs';
 import {
   DropColumnEvent,
+  DropRowEvent,
   SizeOfColumnChanged,
 } from 'src/app/shared/grid/grid-layout.component';
 import { DashboardFacade } from '../+state/dashboard.facade';
@@ -36,7 +37,11 @@ export class DashboardViewComponent {
     this.facade.loadById(this.activatedRoute.snapshot.paramMap.get('id'));
   }
 
-  onDrop({
+  onRowDrop({ draggedRow, rowDroppedOn }: DropRowEvent<DashboardElement>) {
+    this.facade.updateRowOrder(draggedRow, rowDroppedOn);
+  }
+
+  onColumnDrop({
     row,
     draggedColumn,
     columnDroppedOn,

@@ -16,4 +16,5 @@ export interface Grid<T> {
   id: string;
   title: string;
   rows: Rows<T>;
+  order: string[];
 }

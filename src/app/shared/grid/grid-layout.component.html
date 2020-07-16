@@ -1,5 +1,9 @@
 <ng-container *ngIf="grid; else noData">
-  <app-container class="mb-5 d-block">
+  <app-container
+    class="mb-5 d-block"
+    cdkDropList
+    (cdkDropListDropped)="onRowDrop($event)"
+  >
     <h2 class="my-4">
       {{ grid.title
       }}<button class="btn" type="edit" (click)="onToggleEdit()">
@@ -12,9 +16,14 @@
     </h2>
     <app-row
       *ngFor="let row of rowsOf(grid); trackBy: trackByRowId"
+      cdkDrag
+      cdkDragLockAxis="y"
+      cdkDropListGroup
       [title]="row.title"
       [editable]="isEditable"
-      cdkDropListGroup
+      [cdkDragData]="row"
+      [cdkDragDisabled]="!isEditable"
+      class="bg-light"
     >
       <app-column
         class="d-block"
@@ -25,9 +34,9 @@
         [editable]="isEditable"
         [column]="column"
         cdkDropList
-        (cdkDropListEntered)="onRowEnter($event)"
-        (cdkDropListExited)="onRowExit($event)"
-        (cdkDropListDropped)="onRowDrop(row, $event)"
+        (cdkDropListEntered)="onColumnEnter($event)"
+        (cdkDropListExited)="onColumnExit($event)"
+        (cdkDropListDropped)="onColumnDrop(row, $event)"
         [cdkDropListData]="column"
       >
         <div

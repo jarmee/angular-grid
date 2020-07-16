@@ -40,6 +40,7 @@ export class OverviewFacade {
           order: Object.values(columns).map(({ id }) => id) as string[],
         },
       },
+      order: ['1'],
     }))
   );
   constructor(private dashboardService: DashboardService) {}

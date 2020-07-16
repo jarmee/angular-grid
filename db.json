@@ -35,50 +35,30 @@
   ],
   "grid": [
     {
-      "5": {
-        "id": 5,
-        "title": "JSH",
-        "columns": {
-          "1": {
-            "id": "1",
-            "title": "is the",
-            "size": 3
-          },
-          "2": {
-            "id": "2",
-            "title": "best",
-            "size": 9
-          }
-        },
-        "order": [
-          "1",
-          "2"
-        ]
-      },
       "id": 1,
       "title": "Mein Dashboard",
       "rows": {
         "1": {
-          "id": 1,
+          "id": "1",
           "columns": {
             "1": {
               "title": "Freigegebene Aufträge",
               "id": "1",
-              "size": 3
+              "size": 7
             },
             "2": {
               "title": "Auftrag Status",
               "id": "2",
-              "size": 9
+              "size": 3
             }
           },
           "order": [
-            "1",
-            "2"
+            "2",
+            "1"
           ]
         },
         "2": {
-          "id": 2,
+          "id": "2",
           "title": "Produktion",
           "columns": {
             "1": {
@@ -89,7 +69,7 @@
             "2": {
               "title": "Betriebsaufträge",
               "id": "2",
-              "size": 4
+              "size": 13
             },
             "3": {
               "title": "Maschinengruppen",
@@ -99,7 +79,7 @@
             "4": {
               "title": "",
               "id": "4",
-              "size": 3
+              "size": 8
             },
             "5": {
               "title": "",
@@ -113,16 +93,16 @@
             }
           },
           "order": [
-            "2",
-            "1",
             "4",
+            "1",
+            "2",
             "3",
             "6",
             "5"
           ]
         },
         "3": {
-          "id": 3,
+          "id": "3",
           "title": "Vertrieb",
           "columns": {
             "1": {
@@ -145,7 +125,7 @@
           ]
         },
         "4": {
-          "id": 4,
+          "id": "4",
           "title": "Heber",
           "columns": {
             "1": {
@@ -164,7 +144,13 @@
             "1"
           ]
         }
-      }
+      },
+      "order": [
+        "1",
+        "2",
+        "4",
+        "3"
+      ]
     }
   ]
 }
