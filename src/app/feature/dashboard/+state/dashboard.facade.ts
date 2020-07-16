@@ -20,8 +20,6 @@ function __updateRowOrder(
     const rowOrder = dashboard.order;
     const sourceIndex = rowOrder.indexOf(source.id);
     const targetIndex = rowOrder.indexOf(target.id);
-    console.log(sourceIndex);
-    console.log(targetIndex);
     moveItemInArray(rowOrder, sourceIndex, targetIndex);
     return {
       ...dashboard,
@@ -123,7 +121,6 @@ export class DashboardFacade implements OnDestroy {
         .pipe(
           take(1),
           map(__updateRowOrder(sourceRow, targetRow)),
-          tap(console.log),
           tap((dashboard) => this.state$.next({ dashboard })),
           mergeMap((dashboard) =>
             this.gridService.update(dashboard.id, dashboard)
