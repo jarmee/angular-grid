@@ -44,48 +44,48 @@
             "1": {
               "title": "Freigegebene Aufträge",
               "id": "1",
-              "size": 6
+              "size": 3
             },
             "2": {
               "title": "Auftrag Status",
               "id": "2",
-              "size": 6
+              "size": 9
             }
           },
           "order": [
-            "2",
-            "1"
+            "1",
+            "2"
           ],
-          "title": "Dies ist ein Test"
+          "title": ""
         },
         "2": {
           "id": "2",
-          "title": "Produktion",
+          "title": "",
           "columns": {
             "1": {
               "title": "Werkstattaufträge",
               "id": "1",
-              "size": 4
+              "size": 6
             },
             "2": {
               "title": "Betriebsaufträge",
               "id": "2",
-              "size": 13
+              "size": 6
             },
             "3": {
               "title": "Maschinengruppen",
               "id": "3",
-              "size": 12
+              "size": 3
             },
             "4": {
               "title": "",
               "id": "4",
-              "size": 8
+              "size": 3
             },
             "5": {
               "title": "",
               "id": "5",
-              "size": 6
+              "size": 13
             },
             "6": {
               "title": "",
@@ -94,9 +94,9 @@
             }
           },
           "order": [
-            "4",
-            "1",
             "2",
+            "1",
+            "4",
             "3",
             "6",
             "5"
@@ -104,7 +104,7 @@
         },
         "3": {
           "id": "3",
-          "title": "Vertrieb",
+          "title": "",
           "columns": {
             "1": {
               "id": "1",
@@ -127,17 +127,17 @@
         },
         "4": {
           "id": "4",
-          "title": "Heber",
+          "title": "",
           "columns": {
             "1": {
               "id": "1",
               "title": "is the",
-              "size": 6
+              "size": 9
             },
             "2": {
               "id": "2",
               "title": "best",
-              "size": 6
+              "size": 3
             }
           },
           "order": [
@@ -147,9 +147,9 @@
         }
       },
       "order": [
-        "2",
         "1",
         "4",
+        "2",
         "3"
       ]
     }

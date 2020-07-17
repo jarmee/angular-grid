@@ -13,7 +13,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faArrowsAltV, faPlus } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { Row } from '../../api/grid/grid.model';
@@ -41,6 +41,8 @@ export class RowComponent implements OnChanges, OnDestroy {
   titleChanged: EventEmitter<Row<any>> = new EventEmitter<Row<any>>();
 
   faPlus = faPlus;
+
+  faArrowsAltV = faArrowsAltV;
 
   rowForm: FormGroup;
 
