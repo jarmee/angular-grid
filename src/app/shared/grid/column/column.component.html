@@ -1,4 +1,25 @@
-<div *ngIf="hasTitle" class="d-flex flex-row mb-1">
-  <small class="text-grey-50 text-truncate">{{ column?.title }}&nbsp;</small>
+<div *ngIf="hasTitle || isEditable" class="d-flex flex-row mb-1 mx-1">
+  <ng-container *ngIf="isEditable; else showTitle">
+    <div class="d-inline-flex w-100">
+      <div class="flex-grow-1">
+        <form [formGroup]="columnForm">
+          <input
+            type="text"
+            class="form-control small form-control-sm bg-transparent border-0 outline-none p-0"
+            placeholder="Title"
+            formControlName="title"
+          />
+        </form>
+      </div>
+      <div class="ml-2 d-inline-flex align-items-center">
+        <button class="btn btn-sm" type="button" (click)="onDelete(column)">
+          <fa-icon class="small text-grey-50" [icon]="faTimes"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #showTitle
+    ><small class="text-grey-50 text-truncate">{{ column?.title }}&nbsp;</small>
+  </ng-template>
 </div>
 <ng-content></ng-content>

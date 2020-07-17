@@ -1,5 +1,6 @@
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { Injectable, OnDestroy } from '@angular/core';
+import { cloneDeep } from 'lodash';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, mergeMap, take, tap } from 'rxjs/operators';
 import { DashboardService } from 'src/app/shared/api/dashboard/dashboard.service';
@@ -42,6 +43,17 @@ function __updateRowOrder(
   };
 }
 
+function __removeRow(deletedRow: Row<DashboardElement>) {
+  return (dashboard: Dashboard): Dashboard => {
+    const updatedDashboard = cloneDeep(dashboard);
+    delete updatedDashboard.rows[deletedRow.id];
+    updatedDashboard.order = updatedDashboard.order.filter(
+      (id) => id !== deletedRow.id
+    );
+    return updatedDashboard;
+  };
+}
+
 function __updateColumn(rowId: string, column: Column<DashboardElement>) {
   return (dashboard: Dashboard): Dashboard => {
     return {
@@ -81,6 +93,20 @@ function __updateColumnOrder(
         },
       },
     };
+  };
+}
+
+function __removeColumn(
+  rowId: string,
+  deletedColumn: Column<DashboardElement>
+) {
+  return (dashboard: Dashboard): Dashboard => {
+    const updatedDashboard = cloneDeep(dashboard);
+    delete updatedDashboard.rows[rowId].columns[deletedColumn.id];
+    updatedDashboard.rows[rowId].order = updatedDashboard.rows[
+      rowId
+    ].order.filter((id) => id !== deletedColumn.id);
+    return updatedDashboard;
   };
 }
 
@@ -159,6 +185,22 @@ export class DashboardFacade implements OnDestroy {
     );
   }
 
+  deleteRow(row: Row<DashboardElement>) {
+    this.subscriptions.push(
+      this.dashboard$
+        .pipe(
+          take(1),
+          map(__removeRow(row)),
+          tap((dashboard) => this.state$.next({ dashboard })),
+          tap(console.log),
+          mergeMap((dashboard) =>
+            this.gridService.update(dashboard.id, dashboard)
+          )
+        )
+        .subscribe()
+    );
+  }
+
   updateColumn(rowId: string, column: Column<DashboardElement>) {
     this.subscriptions.push(
       this.dashboard$
@@ -184,6 +226,21 @@ export class DashboardFacade implements OnDestroy {
         .pipe(
           take(1),
           map(__updateColumnOrder(rowId, sourceColumn, targetColumn)),
+          tap((dashboard) => this.state$.next({ dashboard })),
+          mergeMap((dashboard) =>
+            this.gridService.update(dashboard.id, dashboard)
+          )
+        )
+        .subscribe()
+    );
+  }
+
+  deleteColumn(rowId: string, column: Column<DashboardElement>) {
+    this.subscriptions.push(
+      this.dashboard$
+        .pipe(
+          take(1),
+          map(__removeColumn(rowId, column)),
           tap((dashboard) => this.state$.next({ dashboard })),
           mergeMap((dashboard) =>
             this.gridService.update(dashboard.id, dashboard)

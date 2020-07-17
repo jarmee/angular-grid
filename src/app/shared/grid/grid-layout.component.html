@@ -24,7 +24,8 @@
       [editable]="isEditable"
       [cdkDragData]="row"
       [cdkDragDisabled]="!isEditable"
-      (titleChanged)="onRowTitleChange($event)"
+      (titleChanged)="onRowTitleChanged($event)"
+      (deleted)="onRowDeleted($event)"
     >
       <app-column
         class="d-block"
@@ -32,13 +33,15 @@
           'app-column__height': isEditable
         }"
         *ngFor="let column of columnsOf(row)"
+        cdkDropList
         [editable]="isEditable"
         [column]="column"
-        cdkDropList
+        [cdkDropListData]="column"
         (cdkDropListEntered)="onColumnEnter($event)"
         (cdkDropListExited)="onColumnExit($event)"
         (cdkDropListDropped)="onColumnDrop(row, $event)"
-        [cdkDropListData]="column"
+        (titleChanged)="onColumnTitleChanged(row, $event)"
+        (deleted)="onColumnDeleted(row, $event)"
       >
         <div
           cdkDrag

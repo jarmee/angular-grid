@@ -13,7 +13,11 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faArrowsAltV, faPlus } from '@fortawesome/free-solid-svg-icons';
+import {
+  faArrowsAltV,
+  faPlus,
+  faTimes,
+} from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { Row } from '../../api/grid/grid.model';
@@ -40,9 +44,14 @@ export class RowComponent implements OnChanges, OnDestroy {
   @Output()
   titleChanged: EventEmitter<Row<any>> = new EventEmitter<Row<any>>();
 
+  @Output()
+  deleted: EventEmitter<Row<any>> = new EventEmitter<Row<any>>();
+
   faPlus = faPlus;
 
   faArrowsAltV = faArrowsAltV;
+
+  faTimes = faTimes;
 
   rowForm: FormGroup;
 
@@ -70,9 +79,14 @@ export class RowComponent implements OnChanges, OnDestroy {
     );
   }
 
+  onDelete(row: Row<any>) {
+    this.deleted.emit(row);
+  }
+
   ngOnChanges(changes: SimpleChanges): void {
     if (
       !!changes.row &&
+      !!changes.row.currentValue &&
       changes.row.currentValue !== changes.row.previousValue
     ) {
       const { title } = changes.row.currentValue;

@@ -105,15 +105,17 @@ export class ColumnContentPlaceholderComponent
 
   onDragEnded(event: CdkDragEnd) {
     this.isDragging = false;
-    const distanceInColumns = __distanceInColumns(
-      this.initialWidth,
-      event.distance.x,
-      this.column.size
-    );
     this.renderer.removeStyle(this.elementRef.nativeElement, 'width');
     this.changeSize.emit({
       ...this.column,
-      size: this.column.size + distanceInColumns,
+      size: __actualColumnSize(
+        this.column.size,
+        __distanceInColumns(
+          this.initialWidth,
+          event.distance.x,
+          this.column.size
+        )
+      ),
     });
   }
 }

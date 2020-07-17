@@ -28,13 +28,27 @@ export interface TitleOfRowChanged<T> {
   row: Row<T>;
 }
 
+export interface RowDeleted<T> {
+  row: Row<T>;
+}
+
 export interface DropColumnEvent<T> {
   row: Row<T>;
   draggedColumn: Column<T>;
   columnDroppedOn: Column<T>;
 }
 
+export interface TitleOfColumnChanged<T> {
+  row: Row<T>;
+  column: Column<T>;
+}
+
 export interface SizeOfColumnChanged<T> {
+  row: Row<T>;
+  column: Column<T>;
+}
+
+export interface ColumnDeleted<T> {
   row: Row<T>;
   column: Column<T>;
 }
@@ -65,14 +79,29 @@ export class GridLayoutComponent {
   >();
 
   @Output()
+  rowDeleted: EventEmitter<RowDeleted<any>> = new EventEmitter<
+    RowDeleted<any>
+  >();
+
+  @Output()
   dropColumn: EventEmitter<DropColumnEvent<any>> = new EventEmitter<
     DropColumnEvent<any>
   >();
 
   @Output()
+  titleOfColumnChanged: EventEmitter<
+    TitleOfColumnChanged<any>
+  > = new EventEmitter<TitleOfColumnChanged<any>>();
+
+  @Output()
   sizeOfColumnChanged: EventEmitter<
     SizeOfColumnChanged<any>
   > = new EventEmitter<SizeOfColumnChanged<any>>();
+
+  @Output()
+  columnDeleted: EventEmitter<ColumnDeleted<any>> = new EventEmitter<
+    ColumnDeleted<any>
+  >();
 
   faPen = faPen;
 
@@ -108,12 +137,13 @@ export class GridLayoutComponent {
     });
   }
 
-  onRowTitleChange(row: Row<any>) {
+  onRowTitleChanged(row: Row<any>) {
     this.titleOfRowChanged.emit({ row });
   }
 
-  onChangeSize(row: Row<any>, column: Column<any>) {
-    this.sizeOfColumnChanged.emit({ row, column });
+  onRowDeleted(row: Row<any>) {
+    console.log(row);
+    this.rowDeleted.emit({ row });
   }
 
   onColumnEnter(dragDrop: CdkDragDrop<any>) {
@@ -143,6 +173,19 @@ export class GridLayoutComponent {
       draggedColumn,
       columnDroppedOn,
     });
+  }
+
+  onColumnTitleChanged(row: Row<any>, column: Column<any>) {
+    this.titleOfColumnChanged.emit({ row, column });
+  }
+
+  onChangeSize(row: Row<any>, column: Column<any>) {
+    this.sizeOfColumnChanged.emit({ row, column });
+  }
+
+  onColumnDeleted(row: Row<any>, column: Column<any>) {
+    console.log(row);
+    this.columnDeleted.emit({ row, column });
   }
 }
 

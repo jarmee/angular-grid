@@ -6,9 +6,12 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faPen } from '@fortawesome/free-solid-svg-icons';
 import { Observable } from 'rxjs';
 import {
+  ColumnDeleted,
   DropColumnEvent,
   DropRowEvent,
+  RowDeleted,
   SizeOfColumnChanged,
+  TitleOfColumnChanged,
   TitleOfRowChanged,
 } from 'src/app/shared/grid/grid-layout.component';
 import { DashboardFacade } from '../+state/dashboard.facade';
@@ -27,6 +30,7 @@ const CSS_CLASS_NAME_DROP_ZONE = 'app-column-show-as-drop-zone';
 })
 export class DashboardViewComponent {
   dashboard$: Observable<Dashboard> = this.facade.dashboard$;
+
   faPen = faPen;
 
   isEditable = false;
@@ -46,6 +50,10 @@ export class DashboardViewComponent {
     this.facade.updateRow(row);
   }
 
+  onRowDeleted({ row }: RowDeleted<DashboardElement>) {
+    this.facade.deleteRow(row);
+  }
+
   onColumnDrop({
     row,
     draggedColumn,
@@ -54,11 +62,22 @@ export class DashboardViewComponent {
     this.facade.updateColumnOrder(row.id, draggedColumn, columnDroppedOn);
   }
 
+  onTitleOfColumnChanged({
+    row,
+    column,
+  }: TitleOfColumnChanged<DashboardElement>) {
+    this.facade.updateColumn(row.id, column);
+  }
+
   onSizeOfColumnChanged({
     row,
     column,
   }: SizeOfColumnChanged<DashboardElement>) {
     this.facade.updateColumn(row.id, column);
+  }
+
+  onColumnDeleted({ row, column }: ColumnDeleted<DashboardElement>) {
+    this.facade.deleteColumn(row.id, column);
   }
 }
 

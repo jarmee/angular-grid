@@ -1,13 +1,22 @@
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  EventEmitter,
   HostBinding,
   Input,
   NgModule,
+  OnChanges,
+  OnDestroy,
   OnInit,
+  Output,
+  SimpleChanges,
   ViewEncapsulation,
 } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
+import { debounceTime, map, tap } from 'rxjs/operators';
 import { Column } from '../../api/grid/grid.model';
 
 @Component({
@@ -16,7 +25,9 @@ import { Column } from '../../api/grid/grid.model';
   styleUrls: ['./column.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
-export class ColumnComponent implements OnInit {
+export class ColumnComponent implements OnInit, OnChanges, OnDestroy {
+  private subscriptions: Subscription[] = [];
+
   @HostBinding('class.d-block') displayBlock = true;
   @HostBinding('class.my-2') marginTopBottom2 = true;
   @HostBinding('class.col-sm-12') cssClassColumnSizeSmall12 = true;
@@ -42,12 +53,42 @@ export class ColumnComponent implements OnInit {
   @Input()
   showTitle: boolean;
 
+  @Output()
+  titleChanged: EventEmitter<Column<any>> = new EventEmitter<Column<any>>();
+
+  @Output()
+  deleted: EventEmitter<Column<any>> = new EventEmitter<Column<any>>();
+
+  columnForm: FormGroup;
+
+  faTimes = faTimes;
+
   get isEditable(): boolean {
     return this.editable;
   }
 
   get hasTitle(): boolean {
     return !!this.column?.title || this.isEditable;
+  }
+
+  constructor(private formBuilder: FormBuilder) {
+    this.columnForm = this.formBuilder.group({
+      title: [''],
+    });
+    this.subscriptions.push(
+      this.columnForm.valueChanges
+        .pipe(
+          debounceTime(500),
+          tap(console.log),
+          map(({ title }) => ({ ...this.column, title })),
+          tap((column) => this.titleChanged.emit(column))
+        )
+        .subscribe()
+    );
+  }
+
+  onDelete(column: Column<any>) {
+    this.deleted.emit(column);
   }
 
   ngOnInit() {
@@ -68,11 +109,30 @@ export class ColumnComponent implements OnInit {
   isColumnOfSize(expected: number): boolean {
     return this.column?.size === expected;
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      !!changes.column &&
+      changes.column.currentValue !== changes.column.previousValue
+    ) {
+      const { title } = changes.column.currentValue;
+      this.columnForm.patchValue(
+        {
+          title,
+        },
+        { emitEvent: false }
+      );
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
 }
 
 @NgModule({
   declarations: [ColumnComponent],
-  imports: [CommonModule, FontAwesomeModule],
+  imports: [CommonModule, FontAwesomeModule, ReactiveFormsModule],
   exports: [ColumnComponent],
 })
 export class ColumnModule {}

@@ -4,8 +4,11 @@
   [columnTemplate]="columnTemplate"
   (dropRow)="onRowDrop($event)"
   (titleOfRowChanged)="onTitleOfRowChanged($event)"
+  (rowDeleted)="onRowDeleted($event)"
   (dropColumn)="onColumnDrop($event)"
   (sizeOfColumnChanged)="onSizeOfColumnChanged($event)"
+  (titleOfColumnChanged)="onTitleOfColumnChanged($event)"
+  (columnDeleted)="onColumnDeleted($event)"
 >
   <ng-template #columnTemplate let-column="column" let-editable="editable">
     <app-dashboard-view-element
