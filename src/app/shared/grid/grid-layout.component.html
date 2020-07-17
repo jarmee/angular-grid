@@ -22,9 +22,11 @@
       cdkDropListGroup
       [row]="row"
       [editable]="isEditable"
+      [deletable]="isAllowDeleteOnlyOnMultipleRows"
       [cdkDragData]="row"
       [cdkDragDisabled]="!isEditable"
       (titleChanged)="onRowTitleChanged($event)"
+      (addedAfter)="onRowAddedAfer($event)"
       (deleted)="onRowDeleted($event)"
     >
       <app-column

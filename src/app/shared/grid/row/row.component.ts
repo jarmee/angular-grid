@@ -39,13 +39,19 @@ export class RowComponent implements OnChanges, OnDestroy {
   editable: boolean;
 
   @Input()
+  deletable: boolean;
+
+  @Input()
   row: Row<any>;
 
   @Output()
-  titleChanged: EventEmitter<Row<any>> = new EventEmitter<Row<any>>();
+  titleChanged = new EventEmitter<Row<any>>();
 
   @Output()
-  deleted: EventEmitter<Row<any>> = new EventEmitter<Row<any>>();
+  addedAfter = new EventEmitter<Row<any>>();
+
+  @Output()
+  deleted = new EventEmitter<Row<any>>();
 
   faPlus = faPlus;
 
@@ -63,6 +69,10 @@ export class RowComponent implements OnChanges, OnDestroy {
     return this.editable;
   }
 
+  get isDeletable(): boolean {
+    return this.deletable;
+  }
+
   constructor(private formBuilder: FormBuilder) {
     this.rowForm = this.formBuilder.group({
       title: [''],
@@ -77,6 +87,10 @@ export class RowComponent implements OnChanges, OnDestroy {
         )
         .subscribe()
     );
+  }
+
+  onAddAfter(row: Row<any>) {
+    this.addedAfter.emit(row);
   }
 
   onDelete(row: Row<any>) {

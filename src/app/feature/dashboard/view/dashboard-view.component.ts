@@ -9,6 +9,7 @@ import {
   ColumnDeleted,
   DropColumnEvent,
   DropRowEvent,
+  RowAddedAfter,
   RowDeleted,
   SizeOfColumnChanged,
   TitleOfColumnChanged,
@@ -48,6 +49,11 @@ export class DashboardViewComponent {
 
   onTitleOfRowChanged({ row }: TitleOfRowChanged<DashboardElement>) {
     this.facade.updateRow(row);
+  }
+
+  onRowAddedAfter({ row }: RowAddedAfter<DashboardElement>) {
+    console.log(row);
+    this.facade.addRowAfter(row);
   }
 
   onRowDeleted({ row }: RowDeleted<DashboardElement>) {

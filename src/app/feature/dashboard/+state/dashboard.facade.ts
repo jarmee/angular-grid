@@ -1,6 +1,6 @@
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { Injectable, OnDestroy } from '@angular/core';
-import { cloneDeep } from 'lodash';
+import { cloneDeep, max, slice } from 'lodash';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { map, mergeMap, take, tap } from 'rxjs/operators';
 import { DashboardService } from 'src/app/shared/api/dashboard/dashboard.service';
@@ -12,6 +12,34 @@ import {
   DashboardState,
   initialState,
 } from './dashboard.model';
+
+function __addRowAfter(row: Row<DashboardElement>) {
+  return (dashboard: Dashboard): Dashboard => {
+    const maxIndex = max(dashboard.order);
+    const newRow: Row<DashboardElement> = {
+      id: `${parseInt(maxIndex, 0) + 1}`,
+      columns: {},
+      order: [],
+      title: '',
+    };
+    const currentIndex = dashboard.order.indexOf(row.id);
+    const insertAfterIndex = 1 + currentIndex;
+    return {
+      ...dashboard,
+      rows: {
+        ...dashboard.rows,
+        [newRow.id]: {
+          ...newRow,
+        },
+      },
+      order: [
+        ...slice(dashboard.order, 0, insertAfterIndex),
+        newRow.id,
+        ...slice(dashboard.order, insertAfterIndex),
+      ],
+    };
+  };
+}
 
 function __updateRow(row: Row<DashboardElement>) {
   return (dashboard: Dashboard): Dashboard => {
@@ -146,6 +174,22 @@ export class DashboardFacade implements OnDestroy {
                 this.state$.next({ dashboard: mergedDashboard })
               )
             )
+          )
+        )
+        .subscribe()
+    );
+  }
+
+  addRowAfter(row: Row<DashboardElement>) {
+    this.subscriptions.push(
+      this.dashboard$
+        .pipe(
+          take(1),
+          map(__addRowAfter(row)),
+          tap(console.log),
+          tap((dashboard) => this.state$.next({ dashboard })),
+          mergeMap((dashboard) =>
+            this.gridService.update(dashboard.id, dashboard)
           )
         )
         .subscribe()

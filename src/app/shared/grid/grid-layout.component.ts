@@ -18,6 +18,7 @@ import { RowModule } from './row/row.component';
 
 const CSS_CLASS_NAME_DRAG_PLACEHOLDER = '.cdk-drag-placeholder';
 const CSS_CLASS_NAME_DROP_ZONE = 'app-column-show-as-drop-zone';
+const MIN_ROWS = 1;
 
 export interface DropRowEvent<T> {
   draggedRow: Row<T>;
@@ -25,6 +26,10 @@ export interface DropRowEvent<T> {
 }
 
 export interface TitleOfRowChanged<T> {
+  row: Row<T>;
+}
+
+export interface RowAddedAfter<T> {
   row: Row<T>;
 }
 
@@ -69,43 +74,36 @@ export class GridLayoutComponent {
   editable: boolean;
 
   @Output()
-  dropRow: EventEmitter<DropRowEvent<any>> = new EventEmitter<
-    DropRowEvent<any>
-  >();
+  dropRow = new EventEmitter<DropRowEvent<any>>();
 
   @Output()
-  titleOfRowChanged: EventEmitter<TitleOfRowChanged<any>> = new EventEmitter<
-    TitleOfRowChanged<any>
-  >();
+  titleOfRowChanged = new EventEmitter<TitleOfRowChanged<any>>();
 
   @Output()
-  rowDeleted: EventEmitter<RowDeleted<any>> = new EventEmitter<
-    RowDeleted<any>
-  >();
+  rowAddedAfter = new EventEmitter<RowAddedAfter<any>>();
 
   @Output()
-  dropColumn: EventEmitter<DropColumnEvent<any>> = new EventEmitter<
-    DropColumnEvent<any>
-  >();
+  rowDeleted = new EventEmitter<RowDeleted<any>>();
 
   @Output()
-  titleOfColumnChanged: EventEmitter<
-    TitleOfColumnChanged<any>
-  > = new EventEmitter<TitleOfColumnChanged<any>>();
+  dropColumn = new EventEmitter<DropColumnEvent<any>>();
 
   @Output()
-  sizeOfColumnChanged: EventEmitter<
-    SizeOfColumnChanged<any>
-  > = new EventEmitter<SizeOfColumnChanged<any>>();
+  titleOfColumnChanged = new EventEmitter<TitleOfColumnChanged<any>>();
 
   @Output()
-  columnDeleted: EventEmitter<ColumnDeleted<any>> = new EventEmitter<
-    ColumnDeleted<any>
-  >();
+  sizeOfColumnChanged = new EventEmitter<SizeOfColumnChanged<any>>();
+
+  @Output()
+  columnDeleted = new EventEmitter<ColumnDeleted<any>>();
 
   faPen = faPen;
 
   isEditable = false;
+
+  get isAllowDeleteOnlyOnMultipleRows() {
+    return this.grid?.order?.length > MIN_ROWS;
+  }
 
   rowsOf({ rows, order }: Grid<any>): Row<any>[] {
     return order.map((rowsId) => rows[rowsId]);
@@ -141,8 +139,11 @@ export class GridLayoutComponent {
     this.titleOfRowChanged.emit({ row });
   }
 
+  onRowAddedAfer(row: Row<any>) {
+    this.rowAddedAfter.emit({ row });
+  }
+
   onRowDeleted(row: Row<any>) {
-    console.log(row);
     this.rowDeleted.emit({ row });
   }
 
