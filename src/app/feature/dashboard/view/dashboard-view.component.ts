@@ -13,6 +13,7 @@ import {
   RowDeleted,
   SizeOfColumnChanged,
   TitleOfColumnChanged,
+  TitleOfGridChanged,
   TitleOfRowChanged,
 } from 'src/app/shared/grid/grid-layout.component';
 import { DashboardFacade } from '../+state/dashboard.facade';
@@ -41,6 +42,10 @@ export class DashboardViewComponent {
     private activatedRoute: ActivatedRoute
   ) {
     this.facade.loadById(this.activatedRoute.snapshot.paramMap.get('id'));
+  }
+
+  onTitleOfGridChanged({ grid }: TitleOfGridChanged<Dashboard>) {
+    this.facade.update(grid);
   }
 
   onRowDrop({ draggedRow, rowDroppedOn }: DropRowEvent<DashboardElement>) {

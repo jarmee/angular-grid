@@ -1,10 +1,10 @@
 <ng-container *ngIf="hasTitle || isEditable">
   <ng-container *ngIf="isEditable; else showTitle">
-    <div class="col-12 d-inline-flex">
-      <div class="mt-3 mb-3 mr-3 d-inline-flex align-items-center">
+    <div class="col-12 d-inline-flex border-bottom">
+      <div class="mr-4 d-inline-flex align-items-center">
         <fa-icon class="text-grey-50 c-move" [icon]="faArrowsAltV"></fa-icon>
       </div>
-      <div class="border-bottom mt-3 mb-3 flex-grow-1">
+      <div class="flex-grow-1">
         <form [formGroup]="rowForm">
           <input
             type="text"
@@ -14,10 +14,7 @@
           />
         </form>
       </div>
-      <div
-        class="mt-3 mb-3 ml-3 d-inline-flex align-items-center"
-        *ngIf="isDeletable"
-      >
+      <div class="ml-2 d-inline-flex align-items-center" *ngIf="isDeletable">
         <button class="btn" type="button" (click)="onDelete(row)">
           <fa-icon class="text-grey-50" [icon]="faTimes"></fa-icon>
         </button>
@@ -25,7 +22,7 @@
     </div>
   </ng-container>
   <ng-template #showTitle>
-    <div class="col-12 border-bottom mt-3 mb-3">
+    <div class="col-12 border-bottom">
       <h5 class="text-secondary">{{ row?.title }}</h5>
     </div>
   </ng-template>

@@ -5,11 +5,17 @@ import {
   EventEmitter,
   Input,
   NgModule,
+  OnChanges,
+  OnDestroy,
   Output,
+  SimpleChanges,
   TemplateRef,
 } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faEllipsisV, faPen } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
+import { debounceTime, map, tap } from 'rxjs/operators';
 import { Column, Grid, Row } from '../api/grid/grid.model';
 import { ColumnModule } from './column/column.component';
 import { ColumnContentPlaceholderModule } from './column/content/placeholder/column-content-placeholder.component';
@@ -19,6 +25,10 @@ import { RowModule } from './row/row.component';
 const CSS_CLASS_NAME_DRAG_PLACEHOLDER = '.cdk-drag-placeholder';
 const CSS_CLASS_NAME_DROP_ZONE = 'app-column-show-as-drop-zone';
 const MIN_ROWS = 1;
+
+export interface TitleOfGridChanged<T> {
+  grid: Grid<T>;
+}
 
 export interface DropRowEvent<T> {
   draggedRow: Row<T>;
@@ -63,7 +73,9 @@ export interface ColumnDeleted<T> {
   templateUrl: './grid-layout.component.html',
   styleUrls: ['./grid-layout.component.scss'],
 })
-export class GridLayoutComponent {
+export class GridLayoutComponent implements OnDestroy, OnChanges {
+  private subscriptions: Subscription[] = [];
+
   @Input()
   columnTemplate: TemplateRef<any>;
 
@@ -72,6 +84,9 @@ export class GridLayoutComponent {
 
   @Input()
   editable: boolean;
+
+  @Output()
+  titleChanged = new EventEmitter<TitleOfGridChanged<any>>();
 
   @Output()
   dropRow = new EventEmitter<DropRowEvent<any>>();
@@ -97,12 +112,31 @@ export class GridLayoutComponent {
   @Output()
   columnDeleted = new EventEmitter<ColumnDeleted<any>>();
 
+  gridForm: FormGroup;
+
   faPen = faPen;
+
+  faEllipsisV = faEllipsisV;
 
   isEditable = false;
 
   get isAllowDeleteOnlyOnMultipleRows() {
     return this.grid?.order?.length > MIN_ROWS;
+  }
+
+  constructor(private formBuilder: FormBuilder) {
+    this.gridForm = this.formBuilder.group({
+      title: [''],
+    });
+    this.subscriptions.push(
+      this.gridForm.valueChanges
+        .pipe(
+          debounceTime(500),
+          map(({ title }) => ({ ...this.grid, title })),
+          tap((grid) => this.titleChanged.emit({ grid }))
+        )
+        .subscribe()
+    );
   }
 
   rowsOf({ rows, order }: Grid<any>): Row<any>[] {
@@ -188,6 +222,26 @@ export class GridLayoutComponent {
     console.log(row);
     this.columnDeleted.emit({ row, column });
   }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (
+      !!changes.grid &&
+      !!changes.grid.currentValue &&
+      changes.grid.currentValue !== changes.grid.previousValue
+    ) {
+      const { title } = changes.grid.currentValue;
+      this.gridForm.patchValue(
+        {
+          title,
+        },
+        { emitEvent: false }
+      );
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
 }
 
 @NgModule({
@@ -200,6 +254,7 @@ export class GridLayoutComponent {
     ColumnContentPlaceholderModule,
     DragDropModule,
     FontAwesomeModule,
+    ReactiveFormsModule,
   ],
   exports: [GridLayoutComponent],
 })

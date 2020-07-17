@@ -2,6 +2,7 @@
   [grid]="dashboard$ | async"
   [editable]="true"
   [columnTemplate]="columnTemplate"
+  (titleChanged)="onTitleOfGridChanged($event)"
   (dropRow)="onRowDrop($event)"
   (titleOfRowChanged)="onTitleOfRowChanged($event)"
   (rowAddedAfter)="onRowAddedAfter($event)"

@@ -1,7 +1,7 @@
 import { moveItemInArray } from '@angular/cdk/drag-drop';
 import { Injectable, OnDestroy } from '@angular/core';
 import { cloneDeep, max, slice } from 'lodash';
-import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subscription } from 'rxjs';
 import { map, mergeMap, take, tap } from 'rxjs/operators';
 import { DashboardService } from 'src/app/shared/api/dashboard/dashboard.service';
 import { Column, Row } from 'src/app/shared/api/grid/grid.model';
@@ -180,13 +180,27 @@ export class DashboardFacade implements OnDestroy {
     );
   }
 
+  update(dashboard: Dashboard) {
+    this.subscriptions.push(
+      of(dashboard)
+        .pipe(
+          tap((updateDashboard) =>
+            this.state$.next({ dashboard: updateDashboard })
+          ),
+          mergeMap((updateDashboard) =>
+            this.gridService.update(updateDashboard.id, updateDashboard)
+          )
+        )
+        .subscribe()
+    );
+  }
+
   addRowAfter(row: Row<DashboardElement>) {
     this.subscriptions.push(
       this.dashboard$
         .pipe(
           take(1),
           map(__addRowAfter(row)),
-          tap(console.log),
           tap((dashboard) => this.state$.next({ dashboard })),
           mergeMap((dashboard) =>
             this.gridService.update(dashboard.id, dashboard)
