@@ -7,12 +7,30 @@ import { DashboardService } from 'src/app/shared/api/dashboard/dashboard.service
 import { Column, Row } from 'src/app/shared/api/grid/grid.model';
 import { GridService } from 'src/app/shared/api/grid/grid.service';
 import {
+  PositionType,
+  PositionTypeGroup,
+} from 'src/app/shared/grid/grid-layout.component';
+import {
   Dashboard,
   DashboardElement,
   DashboardState,
   initialState,
   Recommendations,
 } from './dashboard.model';
+
+function __insertAfter(array: any[], source: any, target: any): any[] {
+  const result = array.filter((element) => element !== source);
+  const targetIndex = result.indexOf(target);
+  result.splice(targetIndex + 1, 0, source);
+  return result;
+}
+
+function __insertBefore(array: any[], source: any, target: any): any[] {
+  const result = array.filter((element) => element !== source);
+  const targetIndex = result.indexOf(target);
+  result.splice(targetIndex, 0, source);
+  return result;
+}
 
 function __addRowAfter(row: Row<DashboardElement>) {
   return (dashboard: Dashboard): Dashboard => {
@@ -104,11 +122,11 @@ function __updateColumn(rowId: string, column: Column<DashboardElement>) {
 function __updateColumnOrder(
   rowId: string,
   source: Column<DashboardElement>,
-  target: Column<DashboardElement>
+  target: Column<DashboardElement>,
+  { horizontal }: PositionTypeGroup
 ) {
   return (dashboard: Dashboard): Dashboard => {
     const row = dashboard.rows[rowId];
-    const columnOrder = row.order;
     if (!source.id && !target.id) {
       const newColumn = {
         ...cloneDeep(source),
@@ -131,13 +149,11 @@ function __updateColumnOrder(
         },
       };
     } else if (!source.id) {
-      const maxIndex = max(row.order);
-      const newColumn = {
+      source = {
         ...cloneDeep(source),
-        id: `${parseInt(maxIndex, 0) + 1}`,
+        id: `${max(row.order) + 1}`,
       };
-      const targetIndex = columnOrder.indexOf(target.id);
-      const insertAfterIndex = targetIndex;
+      row.order.push(source.id);
       return {
         ...dashboard,
         rows: {
@@ -146,29 +162,30 @@ function __updateColumnOrder(
             ...row,
             columns: {
               ...row.columns,
-              [newColumn.id]: {
-                ...newColumn,
+              [source.id]: {
+                ...source,
               },
             },
             order: [
-              ...slice(columnOrder, 0, insertAfterIndex),
-              newColumn.id,
-              ...slice(columnOrder, insertAfterIndex),
+              ...(PositionType.Left === horizontal
+                ? __insertBefore(row.order, source.id, target.id)
+                : __insertAfter(row.order, source.id, target.id)),
             ],
           },
         },
       };
     } else {
-      const sourceIndex = columnOrder.indexOf(source.id);
-      const targetIndex = columnOrder.indexOf(target.id);
-      moveItemInArray(columnOrder, sourceIndex, targetIndex);
       return {
         ...dashboard,
         rows: {
           ...dashboard.rows,
           [row.id]: {
             ...row,
-            order: columnOrder,
+            order: [
+              ...(PositionType.Left === horizontal
+                ? __insertBefore(row.order, source.id, target.id)
+                : __insertAfter(row.order, source.id, target.id)),
+            ],
           },
         },
       };
@@ -316,7 +333,6 @@ export class DashboardFacade implements OnDestroy {
           take(1),
           map(__removeRow(row)),
           tap((dashboard) => this.state$.next({ dashboard })),
-          tap(console.log),
           mergeMap((dashboard) =>
             this.gridService.update(dashboard.id, dashboard)
           )
@@ -343,13 +359,21 @@ export class DashboardFacade implements OnDestroy {
   updateColumnOrder(
     rowId: string,
     sourceColumn: Column<DashboardElement>,
-    targetColumn: Column<DashboardElement>
+    targetColumn: Column<DashboardElement>,
+    positionTypeGroup: PositionTypeGroup
   ) {
     this.subscriptions.push(
       this.dashboard$
         .pipe(
           take(1),
-          map(__updateColumnOrder(rowId, sourceColumn, targetColumn)),
+          map(
+            __updateColumnOrder(
+              rowId,
+              sourceColumn,
+              targetColumn,
+              positionTypeGroup
+            )
+          ),
           tap((dashboard) => this.state$.next({ dashboard })),
           mergeMap((dashboard) =>
             this.gridService.update(dashboard.id, dashboard)

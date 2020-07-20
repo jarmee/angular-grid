@@ -2,9 +2,18 @@
 
 :root {
   --grid-column-placeholder-height: #{$overview-element-height};
-  --grid-column-height: calc(#{$overview-element-height} + 28px);
+  --grid-column-height: calc(#{$overview-element-height} + 40px);
 }
 
 .overview-element__height {
   height: $overview-element-height;
+}
+
+.overview-sidebar__width {
+  min-width: 300px;
+  width: 300px;
+}
+
+.overview__height {
+  height: calc(100vh - 56px);
 }

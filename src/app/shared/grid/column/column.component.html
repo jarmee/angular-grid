@@ -1,6 +1,6 @@
-<div *ngIf="hasTitle || isEditable" class="d-flex flex-row mb-1 mx-1">
+<div *ngIf="hasTitle || isEditable" class="d-flex flex-row">
   <ng-container *ngIf="isEditable; else showTitle">
-    <div class="d-inline-flex w-100">
+    <div class="d-inline-flex w-100 mt-3">
       <div class="flex-grow-1">
         <form [formGroup]="columnForm">
           <input

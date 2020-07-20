@@ -81,7 +81,6 @@ export class RowComponent implements OnChanges, OnDestroy {
       this.rowForm.valueChanges
         .pipe(
           debounceTime(500),
-          tap(console.log),
           map(({ title }) => ({ ...this.row, title })),
           tap((row) => this.titleChanged.emit(row))
         )

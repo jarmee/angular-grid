@@ -76,7 +76,6 @@ export class ColumnContentPlaceholderComponent
   constructor(private elementRef: ElementRef, private renderer: Renderer2) {}
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes);
     this.actualColumnSize = this.column.size;
   }
 
@@ -87,7 +86,6 @@ export class ColumnContentPlaceholderComponent
   }
 
   onDragMove(event: CdkDragMove<Column<any>>) {
-    console.log(event);
     this.isDragging = true;
     this.actualColumnSize = __actualColumnSize(
       this.column.size,

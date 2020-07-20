@@ -1,11 +1,16 @@
 <header>
-  <nav class="navbar navbar-dark bg-primary">
-    <div class="container">
+  <nav class="navbar navbar-dark bg-primary d-flex wv-100 px-0 py-0">
+    <div
+      class="dashboard-sidebar__width overview-sidebar__width text-center py-1"
+    >
       <a class="navbar-brand" href="#">
         <div class="d-flex flex-column">
           <span>🧠 box</span>
         </div></a
       >
+    </div>
+    <div class="flex-grow-1 px-5 py-3 bg-info text-center text-white h-100">
+      {{ title$ | async }} Overview
     </div>
   </nav>
 </header>

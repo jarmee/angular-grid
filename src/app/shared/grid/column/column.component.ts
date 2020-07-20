@@ -80,7 +80,6 @@ export class ColumnComponent implements OnInit, OnChanges, OnDestroy {
       this.columnForm.valueChanges
         .pipe(
           debounceTime(500),
-          tap(console.log),
           map(({ title }) => ({ ...this.column, title })),
           tap((column) => this.titleChanged.emit(column))
         )

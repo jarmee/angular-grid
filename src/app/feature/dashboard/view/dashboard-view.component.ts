@@ -48,7 +48,6 @@ function __generateDropzoneIdsFromRow(row: Row<DashboardElement>) {
 }
 
 function __generateDropzoneIdsFrom(dashboard: Dashboard): string[] {
-  console.log(dashboard);
   if (!dashboard) {
     return [];
   }
@@ -94,8 +93,6 @@ export class DashboardViewComponent {
     data: null,
   };
 
-  dropzoneIdsInternal = 'colum-9-2';
-
   constructor(
     private facade: DashboardFacade,
     private activatedRoute: ActivatedRoute
@@ -120,7 +117,6 @@ export class DashboardViewComponent {
   }
 
   onRowAddedAfter({ row }: RowAddedAfter<DashboardElement>) {
-    console.log(row);
     this.facade.addRowAfter(row);
   }
 
@@ -132,9 +128,14 @@ export class DashboardViewComponent {
     row,
     draggedColumn,
     columnDroppedOn,
+    positionTypeGroup,
   }: DropColumnEvent<DashboardElement>) {
-    console.log(draggedColumn);
-    this.facade.updateColumnOrder(row.id, draggedColumn, columnDroppedOn);
+    this.facade.updateColumnOrder(
+      row.id,
+      draggedColumn,
+      columnDroppedOn,
+      positionTypeGroup
+    );
   }
 
   onTitleOfColumnChanged({

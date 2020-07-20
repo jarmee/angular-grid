@@ -31,7 +31,7 @@
         <div class="col">
           <h3>{{ grid?.title }}</h3>
         </div>
-        <div class="ml-2 d-inline-flex align-items-center">
+        <div *ngIf="editable" class="ml-2 d-inline-flex align-items-center">
           <button class="btn" type="button" (click)="onToggleEdit(grid)">
             <fa-icon class="text-grey-50" [icon]="faEllipsisV"></fa-icon>
           </button>
@@ -83,6 +83,13 @@
               [column]="column"
               (changeSize)="onChangeSize(row, $event)"
             ></app-column-content-placeholder>
+            <div
+              *cdkDragPreview
+              class="card shadow d-flex justify-content-center align-items-center text-info border-info"
+              style="width: 200px; height: 48px;"
+            >
+              {{ column?.title }}
+            </div>
           </ng-container>
           <ng-template #showContent>
             <ng-container
@@ -114,7 +121,8 @@
   </app-container>
 </ng-container>
 <ng-template #noData>
-  <app-container class="mb-5 d-block">
+  <app-container class="mb-5 d-block container text-center mt-5 text-grey-50">
+    <fa-icon class="h1 text-danger d-block" [icon]="faBan"></fa-icon>
     No Data...
   </app-container>
 </ng-template>

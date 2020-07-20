@@ -1,6 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { StoreModule } from '@ngrx/store';
 import { environment } from 'src/environments/environment';
 import { AppRoutingModule } from './app-routing.module';
@@ -14,6 +15,7 @@ import { API_BASE_PATH } from './shared/api/api.model';
     AppRoutingModule,
     StoreModule.forRoot({}, {}),
     HttpClientModule,
+    FontAwesomeModule,
   ],
   providers: [
     {

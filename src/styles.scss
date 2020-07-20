@@ -1,6 +1,9 @@
 @import "variables.scss";
 @import "~bootstrap/scss/bootstrap";
 
+/**
+* Helpers
+*/
 .c-pointer {
   cursor: pointer;
 }
@@ -82,4 +85,10 @@
 }
 .border-style-dashed {
   border-style: dashed !important;
+}
+/**
+*
+*/
+.cdk-dragging {
+  background: red;
 }

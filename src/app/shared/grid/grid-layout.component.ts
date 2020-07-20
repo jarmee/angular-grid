@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   Component,
   EventEmitter,
+  HostListener,
   Input,
   NgModule,
   OnChanges,
@@ -13,7 +14,7 @@ import {
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faEllipsisV, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faBan, faEllipsisV, faPen } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { Column, Grid, Row } from '../api/grid/grid.model';
@@ -32,6 +33,7 @@ const EMPTY_COLUMN: Column<any> = {
   size: null,
   title: null,
 };
+const DEFAULT_DIMENSION = 24;
 
 export interface EditableChanged<T> {
   editable: boolean;
@@ -63,6 +65,7 @@ export interface DropColumnEvent<T> {
   row: Row<T>;
   draggedColumn: Column<T>;
   columnDroppedOn: Column<T>;
+  positionTypeGroup: PositionTypeGroup;
 }
 
 export interface TitleOfColumnChanged<T> {
@@ -80,6 +83,118 @@ export interface ColumnDeleted<T> {
   column: Column<T>;
 }
 
+export enum PositionType {
+  Left = 'Left',
+  Right = 'Right',
+  Top = 'Top',
+  Bottom = 'Bottom',
+  Center = 'Center',
+}
+
+export interface PositionTypeGroup {
+  horizontal: PositionType;
+  vertical: PositionType;
+  absolute: PositionType;
+}
+
+function __calcInnerPosition(
+  positionA: { x: number; y: number },
+  positionB: { x: number; y: number }
+): { x: number; y: number } {
+  let x = positionA.x - positionB.x;
+  let y = positionA.y - positionB.y;
+  if (x < 0) {
+    x = x * -1;
+  }
+  if (y < 0) {
+    y = y * -1;
+  }
+  return {
+    x,
+    y,
+  };
+}
+
+function __isTop(
+  position: { x: number; y: number },
+  width: number,
+  height: number
+): boolean {
+  return (
+    position.x >= 0 &&
+    position.x <= width &&
+    position.y >= 0 &&
+    position.y <= height
+  );
+}
+
+function __isRight(
+  position: { x: number; y: number },
+  width: number,
+  height: number
+): boolean {
+  return (
+    position.x >= width - DEFAULT_DIMENSION &&
+    position.x <= width &&
+    position.y >= 0 &&
+    position.y <= height
+  );
+}
+
+function __isBottom(
+  position: { x: number; y: number },
+  width: number,
+  height: number
+): boolean {
+  return (
+    position.x >= 0 &&
+    position.x <= width &&
+    position.y >= height - DEFAULT_DIMENSION &&
+    position.y <= height
+  );
+}
+
+function __isLeft(
+  position: { x: number; y: number },
+  width: number,
+  height: number
+): boolean {
+  return (
+    position.x >= 0 &&
+    position.x <= width &&
+    position.y >= 0 &&
+    position.y <= height
+  );
+}
+
+function __calcPositionType(
+  innerPosition: { x: number; y: number },
+  dimension: { width: number; height: number }
+): PositionTypeGroup {
+  let absolutePositionType;
+  const { width, height } = dimension;
+  if (__isTop(innerPosition, width, DEFAULT_DIMENSION)) {
+    absolutePositionType = PositionType.Top;
+  } else if (__isRight(innerPosition, width, height)) {
+    absolutePositionType = PositionType.Right;
+  } else if (__isBottom(innerPosition, width, height)) {
+    absolutePositionType = PositionType.Bottom;
+  } else if (__isLeft(innerPosition, DEFAULT_DIMENSION, height)) {
+    absolutePositionType = PositionType.Left;
+  } else {
+    absolutePositionType = PositionType.Center;
+  }
+  return {
+    horizontal: __isLeft(innerPosition, width / 2, height)
+      ? PositionType.Left
+      : PositionType.Right,
+    vertical: __isTop(innerPosition, width, height / 2)
+      ? PositionType.Top
+      : PositionType.Bottom,
+    absolute: absolutePositionType,
+  };
+}
+
 @Component({
   selector: 'app-grid-layout',
   templateUrl: './grid-layout.component.html',
@@ -87,6 +202,7 @@ export interface ColumnDeleted<T> {
 })
 export class GridLayoutComponent implements OnDestroy, OnChanges {
   private subscriptions: Subscription[] = [];
+  private lastPointerPositionOfColumn: { x: number; y: number } = null;
 
   @Input()
   columnTemplate: TemplateRef<any>;
@@ -96,6 +212,9 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
 
   @Input()
   editable: boolean;
+
+  @Input()
+  lastPointerPosition: { x: number; y: number };
 
   @Output()
   editableChanged = new EventEmitter<EditableChanged<any>>();
@@ -132,6 +251,8 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
   faPen = faPen;
 
   faEllipsisV = faEllipsisV;
+
+  faBan = faBan;
 
   isEditable = false;
 
@@ -184,6 +305,11 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
     return `${id}-${size}`;
   }
 
+  @HostListener('document:mousemove', ['$event'])
+  onMouseMove({ x, y }: MouseEvent) {
+    this.lastPointerPositionOfColumn = { x, y };
+  }
+
   onToggleEdit(grid) {
     this.isEditable = !this.isEditable;
     this.editableChanged.emit({
@@ -231,8 +357,17 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
   }
 
   onColumnDrop(row: Row<any>, dragDrop: CdkDragDrop<any>) {
-    console.log(row);
     const dropListComponent = dragDrop.container.element;
+    const {
+      x,
+      y,
+      width,
+      height,
+    } = dropListComponent.nativeElement.getBoundingClientRect();
+    const positionTypeGroup = __calcPositionType(
+      __calcInnerPosition(this.lastPointerPositionOfColumn, { x, y }),
+      { width, height }
+    );
     const dropListElement = dropListComponent.nativeElement;
     const draggedColumn = dragDrop.item.data as Column<any>;
     const columnDroppedOn = dragDrop.container.data as Column<any>;
@@ -241,7 +376,9 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
       row,
       draggedColumn,
       columnDroppedOn,
+      positionTypeGroup,
     });
+    this.lastPointerPositionOfColumn = null;
   }
 
   onColumnTitleChanged(row: Row<any>, column: Column<any>) {
@@ -253,7 +390,6 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
   }
 
   onColumnDeleted(row: Row<any>, column: Column<any>) {
-    console.log(row);
     this.columnDeleted.emit({ row, column });
   }
 

@@ -1,12 +1,41 @@
-<app-grid-layout [grid]="overview$ | async" [columnTemplate]="columnTemplate">
-  <ng-template #columnTemplate let-item="item">
-    <div
-      class="card shadow c-pointer overview-element__height"
-      (click)="onSelect(item.type, item.id)"
-    >
-      <div class="card-body">
-        <h5 class="card-title text-truncate">{{ item.title }}</h5>
-      </div>
+<div class="d-flex wv-100">
+  <div class="bg-white shadow-sm pt-3 overview-sidebar__width overview__height">
+    <div class="w-100 text-left pl-4">
+      <h6 class="mt-3 +mb-3 mx-auto text-info">
+        <fa-icon class="mr-2" [icon]="faList"></fa-icon>Sections
+      </h6>
     </div>
-  </ng-template>
-</app-grid-layout>
+    <ul class="mt-4 list-group list-group-flush border-bottom">
+      <li class="list-group-item">
+        All
+      </li>
+      <li class="list-group-item">
+        Sales
+      </li>
+      <li class="list-group-item">
+        Purchase
+      </li>
+      <li class="list-group-item">
+        Production
+      </li>
+    </ul>
+  </div>
+  <div class="flex-grow-1 overflow-auto overview__height px-5">
+    <app-grid-layout
+      [grid]="overview$ | async"
+      [columnTemplate]="columnTemplate"
+      [editable]="false"
+    >
+      <ng-template #columnTemplate let-item="item">
+        <div
+          class="card shadow c-pointer overview-element__height"
+          (click)="onSelect(item.type, item.id)"
+        >
+          <div class="card-body">
+            <h6 class="card-title text-truncate">{{ item.title }}</h6>
+          </div>
+        </div>
+      </ng-template>
+    </app-grid-layout>
+  </div>
+</div>

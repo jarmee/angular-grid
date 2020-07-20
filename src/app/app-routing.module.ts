@@ -8,6 +8,9 @@ const routes: Routes = [
       import('./feature/overview/feature-overview.module').then(
         (m) => m.FeatureOverviewModule
       ),
+    data: {
+      title: 'Overview',
+    },
   },
   {
     path: 'element/dashboard',
@@ -15,6 +18,9 @@ const routes: Routes = [
       import('./feature/dashboard/feautre-dashboard.module').then(
         (m) => m.FeautreDashboardModule
       ),
+    data: {
+      title: 'Dashboard',
+    },
   },
 ];
 
