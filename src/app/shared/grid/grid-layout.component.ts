@@ -2,6 +2,7 @@ import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  ElementRef,
   EventEmitter,
   HostListener,
   Input,
@@ -9,6 +10,7 @@ import {
   OnChanges,
   OnDestroy,
   Output,
+  Renderer2,
   SimpleChanges,
   TemplateRef,
 } from '@angular/core';
@@ -173,7 +175,7 @@ function __calcPositionType(
 ): PositionTypeGroup {
   let absolutePositionType;
   const { width, height } = dimension;
-  if (__isTop(innerPosition, width, DEFAULT_DIMENSION)) {
+  if (__isTop(innerPosition, width, DEFAULT_DIMENSION + 40)) {
     absolutePositionType = PositionType.Top;
   } else if (__isRight(innerPosition, width, height)) {
     absolutePositionType = PositionType.Right;
@@ -195,6 +197,19 @@ function __calcPositionType(
   };
 }
 
+function __removePositionTypeCssClasses(
+  renderer: Renderer2,
+  elementRef: ElementRef
+) {
+  if (!elementRef) {
+    return;
+  }
+  renderer.removeClass(elementRef.nativeElement, 'highlight-top');
+  renderer.removeClass(elementRef.nativeElement, 'highlight-right');
+  renderer.removeClass(elementRef.nativeElement, 'highlight-bottom');
+  renderer.removeClass(elementRef.nativeElement, 'highlight-left');
+}
+
 @Component({
   selector: 'app-grid-layout',
   templateUrl: './grid-layout.component.html',
@@ -202,7 +217,10 @@ function __calcPositionType(
 })
 export class GridLayoutComponent implements OnDestroy, OnChanges {
   private subscriptions: Subscription[] = [];
+
   private lastPointerPositionOfColumn: { x: number; y: number } = null;
+
+  private activeDropListElementRef: ElementRef<any> = null;
 
   @Input()
   columnTemplate: TemplateRef<any>;
@@ -262,7 +280,7 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
     return this.grid?.order?.length > MIN_ROWS;
   }
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private renderer: Renderer2) {
     this.gridForm = this.formBuilder.group({
       title: [''],
     });
@@ -305,9 +323,43 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
     return `${id}-${size}`;
   }
 
+  getPositionTypeGroup(elementRef: ElementRef) {
+    const {
+      x,
+      y,
+      width,
+      height,
+    } = elementRef.nativeElement.getBoundingClientRect();
+    return __calcPositionType(
+      __calcInnerPosition(this.lastPointerPositionOfColumn, { x, y }),
+      { width, height }
+    );
+  }
+
+  resetActiveDropListRef(): void {
+    __removePositionTypeCssClasses(
+      this.renderer,
+      this.activeDropListElementRef
+    );
+    this.activeDropListElementRef = null;
+  }
+
   @HostListener('document:mousemove', ['$event'])
-  onMouseMove({ x, y }: MouseEvent) {
-    this.lastPointerPositionOfColumn = { x, y };
+  onMouseMove({ x: mouseX, y: mouseY }: MouseEvent) {
+    this.lastPointerPositionOfColumn = { x: mouseX, y: mouseY };
+    if (!!this.activeDropListElementRef) {
+      const positionTypeGroup = this.getPositionTypeGroup(
+        this.activeDropListElementRef
+      );
+      __removePositionTypeCssClasses(
+        this.renderer,
+        this.activeDropListElementRef
+      );
+      this.renderer.addClass(
+        this.activeDropListElementRef.nativeElement,
+        `highlight-${positionTypeGroup.absolute.toLowerCase()}`
+      );
+    }
   }
 
   onToggleEdit(grid) {
@@ -341,6 +393,7 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
   }
 
   onColumnEnter(dragDrop: CdkDragDrop<any>) {
+    this.activeDropListElementRef = dragDrop.container.element;
     const dropListComponent = dragDrop.container.element;
     const dropListElement = dropListComponent.nativeElement;
     const placeHolderElement = dropListElement.querySelector(
@@ -351,23 +404,16 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
   }
 
   onColumnExit(dragDrop: CdkDragDrop<any>) {
+    this.resetActiveDropListRef();
     const dropListComponent = dragDrop.container.element;
     const dropListElement = dropListComponent.nativeElement;
     dropListElement.classList.remove(CSS_CLASS_NAME_DROP_ZONE);
   }
 
   onColumnDrop(row: Row<any>, dragDrop: CdkDragDrop<any>) {
+    this.resetActiveDropListRef();
     const dropListComponent = dragDrop.container.element;
-    const {
-      x,
-      y,
-      width,
-      height,
-    } = dropListComponent.nativeElement.getBoundingClientRect();
-    const positionTypeGroup = __calcPositionType(
-      __calcInnerPosition(this.lastPointerPositionOfColumn, { x, y }),
-      { width, height }
-    );
+    const positionTypeGroup = this.getPositionTypeGroup(dropListComponent);
     const dropListElement = dropListComponent.nativeElement;
     const draggedColumn = dragDrop.item.data as Column<any>;
     const columnDroppedOn = dragDrop.container.data as Column<any>;
