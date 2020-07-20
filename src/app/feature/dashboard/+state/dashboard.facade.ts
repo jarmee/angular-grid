@@ -106,21 +106,51 @@ function __updateColumnOrder(
   target: Column<DashboardElement>
 ) {
   return (dashboard: Dashboard): Dashboard => {
-    const targetColumn = dashboard.rows[rowId];
-    const columnOrder = targetColumn.order;
-    const sourceIndex = columnOrder.indexOf(source.id);
-    const targetIndex = columnOrder.indexOf(target.id);
-    moveItemInArray(columnOrder, sourceIndex, targetIndex);
-    return {
-      ...dashboard,
-      rows: {
-        ...dashboard.rows,
-        [targetColumn.id]: {
-          ...targetColumn,
-          order: columnOrder,
+    const row = dashboard.rows[rowId];
+    const columnOrder = row.order;
+    if (!source.id) {
+      const maxIndex = max(row.order);
+      const newColumn = {
+        ...cloneDeep(source),
+        id: `${parseInt(maxIndex, 0) + 1}`,
+      };
+      const targetIndex = columnOrder.indexOf(target.id);
+      const insertAfterIndex = targetIndex;
+      return {
+        ...dashboard,
+        rows: {
+          ...dashboard.rows,
+          [row.id]: {
+            ...row,
+            columns: {
+              ...row.columns,
+              [newColumn.id]: {
+                ...newColumn,
+              },
+            },
+            order: [
+              ...slice(columnOrder, 0, insertAfterIndex),
+              newColumn.id,
+              ...slice(columnOrder, insertAfterIndex),
+            ],
+          },
         },
-      },
-    };
+      };
+    } else {
+      const sourceIndex = columnOrder.indexOf(source.id);
+      const targetIndex = columnOrder.indexOf(target.id);
+      moveItemInArray(columnOrder, sourceIndex, targetIndex);
+      return {
+        ...dashboard,
+        rows: {
+          ...dashboard.rows,
+          [row.id]: {
+            ...row,
+            order: columnOrder,
+          },
+        },
+      };
+    }
   };
 }
 

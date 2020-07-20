@@ -38,50 +38,22 @@
       "id": 1,
       "title": "Container",
       "rows": {
-        "1": {
-          "id": "1",
-          "columns": {
-            "1": {
-              "title": "Column1",
-              "id": "1",
-              "size": 6
-            },
-            "2": {
-              "title": "Column2",
-              "id": "2",
-              "size": 6
-            }
-          },
-          "order": [
-            "2",
-            "1"
-          ],
-          "title": "Row"
+        "5": {
+          "id": "5",
+          "columns": {},
+          "order": [],
+          "title": ""
         },
-        "4": {
-          "id": "4",
-          "title": "",
-          "columns": {
-            "1": {
-              "id": "1",
-              "title": "is the",
-              "size": 3
-            },
-            "2": {
-              "id": "2",
-              "title": "best",
-              "size": 9
-            }
-          },
-          "order": [
-            "1",
-            "2"
-          ]
+        "6": {
+          "id": "6",
+          "columns": {},
+          "order": [],
+          "title": ""
         }
       },
       "order": [
-        "1",
-        "4"
+        "5",
+        "6"
       ]
     }
   ]

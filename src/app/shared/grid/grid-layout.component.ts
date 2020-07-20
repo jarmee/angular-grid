@@ -2,6 +2,7 @@ import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import {
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   NgModule,
@@ -10,6 +11,7 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
+  ViewChildren,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -17,7 +19,7 @@ import { faEllipsisV, faPen } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { Column, Grid, Row } from '../api/grid/grid.model';
-import { ColumnModule } from './column/column.component';
+import { ColumnComponent, ColumnModule } from './column/column.component';
 import { ColumnContentPlaceholderModule } from './column/content/placeholder/column-content-placeholder.component';
 import { ContainerModule } from './container/container.component';
 import { RowModule } from './row/row.component';
@@ -25,6 +27,12 @@ import { RowModule } from './row/row.component';
 const CSS_CLASS_NAME_DRAG_PLACEHOLDER = '.cdk-drag-placeholder';
 const CSS_CLASS_NAME_DROP_ZONE = 'app-column-show-as-drop-zone';
 const MIN_ROWS = 1;
+
+export interface EditableChanged<T> {
+  editable: boolean;
+  grid: Grid<T>;
+  componentInstance: GridLayoutComponent;
+}
 
 export interface TitleOfGridChanged<T> {
   grid: Grid<T>;
@@ -76,6 +84,9 @@ export interface ColumnDeleted<T> {
 export class GridLayoutComponent implements OnDestroy, OnChanges {
   private subscriptions: Subscription[] = [];
 
+  @ViewChildren(ColumnComponent, { read: ElementRef })
+  columnElementRefs: ElementRef[];
+
   @Input()
   columnTemplate: TemplateRef<any>;
 
@@ -84,6 +95,9 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
 
   @Input()
   editable: boolean;
+
+  @Output()
+  editableChanged = new EventEmitter<EditableChanged<any>>();
 
   @Output()
   titleChanged = new EventEmitter<TitleOfGridChanged<any>>();
@@ -124,7 +138,10 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
     return this.grid?.order?.length > MIN_ROWS;
   }
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private elementRef: ElementRef
+  ) {
     this.gridForm = this.formBuilder.group({
       title: [''],
     });
@@ -155,8 +172,13 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
     return `${id}-${size}`;
   }
 
-  onToggleEdit() {
+  onToggleEdit(grid) {
     this.isEditable = !this.isEditable;
+    this.editableChanged.emit({
+      editable: this.isEditable,
+      grid,
+      componentInstance: this,
+    });
   }
 
   onRowDrop(dragDrop: CdkDragDrop<any>) {

@@ -28,6 +28,7 @@ import { Column } from '../../api/grid/grid.model';
 export class ColumnComponent implements OnInit, OnChanges, OnDestroy {
   private subscriptions: Subscription[] = [];
 
+  @HostBinding('attr.id') id;
   @HostBinding('class.d-block') displayBlock = true;
   @HostBinding('class.my-2') marginTopBottom2 = true;
   @HostBinding('class.col-sm-12') cssClassColumnSizeSmall12 = true;

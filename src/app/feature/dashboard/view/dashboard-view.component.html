@@ -1,21 +1,44 @@
-<app-grid-layout
-  [grid]="dashboard$ | async"
-  [editable]="true"
-  [columnTemplate]="columnTemplate"
-  (titleChanged)="onTitleOfGridChanged($event)"
-  (dropRow)="onRowDrop($event)"
-  (titleOfRowChanged)="onTitleOfRowChanged($event)"
-  (rowAddedAfter)="onRowAddedAfter($event)"
-  (rowDeleted)="onRowDeleted($event)"
-  (dropColumn)="onColumnDrop($event)"
-  (sizeOfColumnChanged)="onSizeOfColumnChanged($event)"
-  (titleOfColumnChanged)="onTitleOfColumnChanged($event)"
-  (columnDeleted)="onColumnDeleted($event)"
->
-  <ng-template #columnTemplate let-column="column" let-editable="editable">
-    <app-dashboard-view-element
-      class="d-block dashboard-view-element__height"
-      [editable]="editable"
-    ></app-dashboard-view-element>
-  </ng-template>
-</app-grid-layout>
+<div class="d-flex wv-100">
+  <div class="flex-grow-1 scroll-auto h-100">
+    <app-grid-layout
+      [grid]="dashboard$ | async"
+      [editable]="true"
+      [columnTemplate]="columnTemplate"
+      (editableChanged)="onGridEditableChanged($event)"
+      (titleChanged)="onTitleOfGridChanged($event)"
+      (dropRow)="onRowDrop($event)"
+      (titleOfRowChanged)="onTitleOfRowChanged($event)"
+      (rowAddedAfter)="onRowAddedAfter($event)"
+      (rowDeleted)="onRowDeleted($event)"
+      (dropColumn)="onColumnDrop($event)"
+      (sizeOfColumnChanged)="onSizeOfColumnChanged($event)"
+      (titleOfColumnChanged)="onTitleOfColumnChanged($event)"
+      (columnDeleted)="onColumnDeleted($event)"
+    >
+      <ng-template #columnTemplate let-column="column" let-editable="editable">
+        <app-dashboard-view-element
+          class="d-block dashboard-view-element__height"
+          [editable]="editable"
+        ></app-dashboard-view-element>
+      </ng-template>
+    </app-grid-layout>
+  </div>
+  <div
+    *ngIf="isEditable"
+    class="bg-white shadow-sm vh-100 text-center pt-3 dashboard-sidebar__width"
+  >
+    <h6 class="mb-5">Elements</h6>
+    <ul
+      class="list-group list-group-flush border-bottom"
+      cdkDropList
+      [cdkDropListConnectedTo]="dropZoneIds"
+    >
+      <li class="list-group-item c-move" cdkDrag [cdkDragData]="testColumn">
+        Element 1
+      </li>
+      <li class="list-group-item c-move" cdkDrag [cdkDragData]="testColumn">
+        Element 2
+      </li>
+    </ul>
+  </div>
+</div>

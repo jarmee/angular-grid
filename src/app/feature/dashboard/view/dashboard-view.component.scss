@@ -1,10 +1,18 @@
 @import "../../../../variables.scss";
 
 :root {
-  --grid-column-placeholder-height: #{$dashboard-element-height};
-  --grid-column-height: calc(#{$dashboard-element-height} + 28px);
+  --grid-column-placeholder-height: #{$dashboard-view-element-height};
+  --grid-column-height: calc(#{$dashboard-view-element-height} + 28px);
 }
 
 .dashboard-view-element__height {
-  height: $dashboard-element-height;
+  height: $dashboard-view-element-height;
+}
+
+.dashboard-recommendation-element__height {
+  height: $dashboard-recommendation-element-height;
+}
+
+.dashboard-sidebar__width {
+  width: 300px;
 }
