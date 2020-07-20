@@ -108,7 +108,28 @@ function __updateColumnOrder(
   return (dashboard: Dashboard): Dashboard => {
     const row = dashboard.rows[rowId];
     const columnOrder = row.order;
-    if (!source.id) {
+    if (!source.id && !target.id) {
+      const newColumn = {
+        ...cloneDeep(source),
+        id: 1,
+      };
+      return {
+        ...dashboard,
+        rows: {
+          ...dashboard.rows,
+          [row.id]: {
+            ...row,
+            columns: {
+              ...row.columns,
+              [newColumn.id]: {
+                ...newColumn,
+              },
+            },
+            order: [newColumn.id],
+          },
+        },
+      };
+    } else if (!source.id) {
       const maxIndex = max(row.order);
       const newColumn = {
         ...cloneDeep(source),

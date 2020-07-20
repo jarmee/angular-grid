@@ -28,6 +28,10 @@
   height: var(--grid-column-placeholder-height);
 }
 
+.app-column-dropzone__height {
+  height: var(--grid-column-dropzone-height);
+}
+
 .app-column-show-as-drop-zone {
   border: 2px dashed $grey-50;
   border-radius: 8px;

@@ -2,7 +2,6 @@ import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import {
   Component,
-  ElementRef,
   EventEmitter,
   Input,
   NgModule,
@@ -11,7 +10,6 @@ import {
   Output,
   SimpleChanges,
   TemplateRef,
-  ViewChildren,
 } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -19,19 +17,25 @@ import { faEllipsisV, faPen } from '@fortawesome/free-solid-svg-icons';
 import { Subscription } from 'rxjs';
 import { debounceTime, map, tap } from 'rxjs/operators';
 import { Column, Grid, Row } from '../api/grid/grid.model';
-import { ColumnComponent, ColumnModule } from './column/column.component';
+import { ColumnModule } from './column/column.component';
 import { ColumnContentPlaceholderModule } from './column/content/placeholder/column-content-placeholder.component';
+import { ColumnDropzoneModule } from './column/dropzone/column-dropzone.component';
 import { ContainerModule } from './container/container.component';
 import { RowModule } from './row/row.component';
 
 const CSS_CLASS_NAME_DRAG_PLACEHOLDER = '.cdk-drag-placeholder';
 const CSS_CLASS_NAME_DROP_ZONE = 'app-column-show-as-drop-zone';
 const MIN_ROWS = 1;
+const EMPTY_COLUMN: Column<any> = {
+  id: null,
+  item: null,
+  size: null,
+  title: null,
+};
 
 export interface EditableChanged<T> {
   editable: boolean;
   grid: Grid<T>;
-  componentInstance: GridLayoutComponent;
 }
 
 export interface TitleOfGridChanged<T> {
@@ -84,9 +88,6 @@ export interface ColumnDeleted<T> {
 export class GridLayoutComponent implements OnDestroy, OnChanges {
   private subscriptions: Subscription[] = [];
 
-  @ViewChildren(ColumnComponent, { read: ElementRef })
-  columnElementRefs: ElementRef[];
-
   @Input()
   columnTemplate: TemplateRef<any>;
 
@@ -134,14 +135,13 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
 
   isEditable = false;
 
+  emptyColumn = EMPTY_COLUMN;
+
   get isAllowDeleteOnlyOnMultipleRows() {
     return this.grid?.order?.length > MIN_ROWS;
   }
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private elementRef: ElementRef
-  ) {
+  constructor(private formBuilder: FormBuilder) {
     this.gridForm = this.formBuilder.group({
       title: [''],
     });
@@ -168,6 +168,18 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
     return order.map((columnId) => columns[columnId]);
   }
 
+  areColumnsAvailableIn({ order }: Row<any>): boolean {
+    return order.length > 0;
+  }
+
+  dropListIdOf(row: Row<any>, column: Column<any>) {
+    return `column-${row.id}-${column.id}`;
+  }
+
+  dropListIdForDropzoneOf(row: Row<any>) {
+    return `empty-row-${row.id}`;
+  }
+
   trackByColumnIdAndSize({ id, size }: Column<any>) {
     return `${id}-${size}`;
   }
@@ -177,7 +189,6 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
     this.editableChanged.emit({
       editable: this.isEditable,
       grid,
-      componentInstance: this,
     });
   }
 
@@ -220,6 +231,7 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
   }
 
   onColumnDrop(row: Row<any>, dragDrop: CdkDragDrop<any>) {
+    console.log(row);
     const dropListComponent = dragDrop.container.element;
     const dropListElement = dropListComponent.nativeElement;
     const draggedColumn = dragDrop.item.data as Column<any>;
@@ -274,6 +286,7 @@ export class GridLayoutComponent implements OnDestroy, OnChanges {
     ContainerModule,
     ColumnModule,
     ColumnContentPlaceholderModule,
+    ColumnDropzoneModule,
     DragDropModule,
     FontAwesomeModule,
     ReactiveFormsModule,

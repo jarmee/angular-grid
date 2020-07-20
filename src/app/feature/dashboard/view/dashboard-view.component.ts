@@ -8,8 +8,10 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faPen } from '@fortawesome/free-solid-svg-icons';
+import { faList, faPen } from '@fortawesome/free-solid-svg-icons';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { Row } from 'src/app/shared/api/grid/grid.model';
 import {
   ColumnDeleted,
   DropColumnEvent,
@@ -28,6 +30,33 @@ import { Dashboard, DashboardElement } from '../+state/dashboard.model';
 import { SharedGridModule } from '../../../shared/grid/shared-grid.module';
 import { DashboardViewElementModule } from './element/dashboard-view-element.component';
 
+function __generateDropzoneIdsFromRow(row: Row<DashboardElement>) {
+  if (!row) {
+    return [];
+  }
+  if (!row.order.length) {
+    return [`empty-row-${row.id}`];
+  }
+  return row.order.reduce(
+    (result, columnId) => [...result, `column-${row.id}-${columnId}`],
+    []
+  );
+}
+
+function __generateDropzoneIdsFrom(dashboard: Dashboard): string[] {
+  console.log(dashboard);
+  if (!dashboard) {
+    return [];
+  }
+  if (!dashboard.rows) {
+    return [];
+  }
+  return dashboard.order
+    .map((rowId) => dashboard.rows[rowId])
+    .map(__generateDropzoneIdsFromRow)
+    .reduce((result, dropzoneIds) => [...result, ...dropzoneIds], []);
+}
+
 @Component({
   selector: 'app-dashboard-view',
   templateUrl: './dashboard-view.component.html',
@@ -40,7 +69,13 @@ export class DashboardViewComponent {
 
   dashboard$: Observable<Dashboard> = this.facade.dashboard$;
 
+  dropzoneIds$: Observable<string[]> = this.dashboard$.pipe(
+    map(__generateDropzoneIdsFrom)
+  );
+
   faPen = faPen;
+
+  faList = faList;
 
   isEditable = false;
 
@@ -53,6 +88,8 @@ export class DashboardViewComponent {
     data: null,
   };
 
+  dropzoneIdsInternal = 'colum-9-2';
+
   constructor(
     private facade: DashboardFacade,
     private activatedRoute: ActivatedRoute
@@ -60,14 +97,8 @@ export class DashboardViewComponent {
     this.facade.loadById(this.activatedRoute.snapshot.paramMap.get('id'));
   }
 
-  onGridEditableChanged({
-    editable,
-    componentInstance,
-  }: EditableChanged<DashboardElement>) {
+  onGridEditableChanged({ editable }: EditableChanged<DashboardElement>) {
     this.isEditable = editable;
-    this.dropZoneIds = componentInstance.columnElementRefs.map(
-      (columnELementRef) => columnELementRef.nativeElement.id
-    );
   }
 
   onTitleOfGridChanged({ grid }: TitleOfGridChanged<Dashboard>) {

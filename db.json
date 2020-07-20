@@ -40,14 +40,39 @@
       "rows": {
         "5": {
           "id": "5",
-          "columns": {},
-          "order": [],
-          "title": ""
+          "columns": {
+            "1": {
+              "id": 1,
+              "size": 6,
+              "title": "Test",
+              "data": null
+            },
+            "2": {
+              "id": "2",
+              "size": 3,
+              "title": "Test",
+              "data": null
+            }
+          },
+          "order": [
+            "2",
+            1
+          ],
+          "title": "Row #1"
         },
         "6": {
           "id": "6",
-          "columns": {},
-          "order": [],
+          "columns": {
+            "1": {
+              "id": 1,
+              "size": 12,
+              "title": "Test",
+              "data": null
+            }
+          },
+          "order": [
+            1
+          ],
           "title": ""
         }
       },

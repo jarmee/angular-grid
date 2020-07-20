@@ -1,5 +1,5 @@
 <div class="d-flex wv-100">
-  <div class="flex-grow-1 scroll-auto h-100">
+  <div class="flex-grow-1 overflow-auto dashboard__height">
     <app-grid-layout
       [grid]="dashboard$ | async"
       [editable]="true"
@@ -25,13 +25,18 @@
   </div>
   <div
     *ngIf="isEditable"
-    class="bg-white shadow-sm vh-100 text-center pt-3 dashboard-sidebar__width"
+    class="bg-white shadow-sm pt-3 dashboard-sidebar__width dashboard__height"
   >
-    <h6 class="mb-5">Elements</h6>
+    <div class="w-100 text-center">
+      <h6 class="mb-3 mx-auto text-info">
+        <fa-icon class="mr-2" [icon]="faList"></fa-icon>Addable Elements
+      </h6>
+    </div>
     <ul
+      *ngIf="dropzoneIds$ | async as dropzoneIds"
       class="list-group list-group-flush border-bottom"
       cdkDropList
-      [cdkDropListConnectedTo]="dropZoneIds"
+      [cdkDropListConnectedTo]="dropzoneIds"
     >
       <li class="list-group-item c-move" cdkDrag [cdkDragData]="testColumn">
         Element 1

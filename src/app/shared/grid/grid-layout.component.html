@@ -54,6 +54,7 @@
       (deleted)="onRowDeleted($event)"
     >
       <app-column
+        [id]="dropListIdOf(row, column)"
         class="d-block"
         [ngClass]="{
           'app-column__height': isEditable
@@ -96,9 +97,17 @@
           </ng-template>
         </div>
       </app-column>
-      <div class="col-3 border pp-column-content-placeholder__height">
-        Hello
-      </div>
+      <app-column-dropzone
+        [id]="dropListIdForDropzoneOf(row)"
+        cdkDropList
+        class="app-column-dropzone__height"
+        [cdkDropListData]="emptyColumn"
+        [ngClass]="{
+          'd-block': isEditable && !areColumnsAvailableIn(row),
+          'd-none': !isEditable || areColumnsAvailableIn(row)
+        }"
+        (cdkDropListDropped)="onColumnDrop(row, $event)"
+      ></app-column-dropzone>
     </app-row>
   </app-container>
 </ng-container>
