@@ -1,5 +1,10 @@
 <div class="d-flex wv-100">
-  <div class="flex-grow-1 overflow-auto dashboard__height">
+  <div
+    class="flex-grow-1 overflow-auto dashboard__height"
+    [ngClass]="{
+      'px-5': isEditable
+    }"
+  >
     <app-grid-layout
       [grid]="dashboard$ | async"
       [editable]="true"
@@ -38,11 +43,25 @@
       cdkDropList
       [cdkDropListConnectedTo]="dropzoneIds"
     >
-      <li class="list-group-item c-move" cdkDrag [cdkDragData]="testColumn">
-        Element 1
-      </li>
-      <li class="list-group-item c-move" cdkDrag [cdkDragData]="testColumn">
-        Element 2
+      <li
+        *ngFor="let recommendation of recommendations$ | async"
+        class="list-group-item c-move"
+        cdkDrag
+        [cdkDragData]="recommendation"
+      >
+        {{ recommendation.title }}
+        <app-row
+          class="m-0 p-0"
+          *cdkDragPreview
+          class="position-absolute w-100 z-index-200 mt-n3 ml-n3"
+        >
+          <app-column class="m-0 p-0" [column]="recommendation">
+            <app-column-content-placeholder
+              class="c-move dashboard-view-element__height"
+              [column]="recommendation"
+            ></app-column-content-placeholder>
+          </app-column>
+        </app-row>
       </li>
     </ul>
   </div>

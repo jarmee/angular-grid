@@ -52,7 +52,7 @@ export class ColumnComponent implements OnInit, OnChanges, OnDestroy {
   editable: boolean;
 
   @Input()
-  showTitle: boolean;
+  showTitle = true;
 
   @Output()
   titleChanged: EventEmitter<Column<any>> = new EventEmitter<Column<any>>();
@@ -69,7 +69,7 @@ export class ColumnComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   get hasTitle(): boolean {
-    return !!this.column?.title || this.isEditable;
+    return this.showTitle && (!!this.column?.title || this.isEditable);
   }
 
   constructor(private formBuilder: FormBuilder) {

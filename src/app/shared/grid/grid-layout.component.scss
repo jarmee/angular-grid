@@ -32,7 +32,7 @@
   height: var(--grid-column-dropzone-height);
 }
 
-.app-column-show-as-drop-zone {
+app-column.app-column-show-as-drop-zone {
   border: 2px dashed $grey-50;
   border-radius: 8px;
   ::ng-deep * {
@@ -44,8 +44,8 @@
   &:before {
     content: "+";
     position: absolute;
-    font-size: 3em;
-    color: $grey-50;
+    font-size: 2.5em;
+    color: $grey-30;
     display: inline-flex;
     justify-content: center;
     align-items: center;

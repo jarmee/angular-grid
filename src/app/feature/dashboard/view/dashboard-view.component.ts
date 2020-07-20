@@ -26,7 +26,11 @@ import {
   TitleOfRowChanged,
 } from 'src/app/shared/grid/grid-layout.component';
 import { DashboardFacade } from '../+state/dashboard.facade';
-import { Dashboard, DashboardElement } from '../+state/dashboard.model';
+import {
+  Dashboard,
+  DashboardElement,
+  Recommendations,
+} from '../+state/dashboard.model';
 import { SharedGridModule } from '../../../shared/grid/shared-grid.module';
 import { DashboardViewElementModule } from './element/dashboard-view-element.component';
 
@@ -72,6 +76,8 @@ export class DashboardViewComponent {
   dropzoneIds$: Observable<string[]> = this.dashboard$.pipe(
     map(__generateDropzoneIdsFrom)
   );
+
+  recommendations$: Observable<Recommendations> = this.facade.recommendations$;
 
   faPen = faPen;
 

@@ -11,6 +11,7 @@ import {
   DashboardElement,
   DashboardState,
   initialState,
+  Recommendations,
 } from './dashboard.model';
 
 function __addRowAfter(row: Row<DashboardElement>) {
@@ -201,6 +202,20 @@ export class DashboardFacade implements OnDestroy {
   dashboard$: Observable<Dashboard> = this.state$.pipe(
     map((state) => state.dashboard)
   );
+  recommendations$: Observable<Recommendations> = of([
+    {
+      id: null,
+      title: 'Virtueller PA alle Konten',
+      size: 3,
+      item: {},
+    },
+    {
+      id: null,
+      title: 'Anlage Miete Pro User',
+      size: 6,
+      item: {},
+    },
+  ]);
 
   constructor(
     private dashboardService: DashboardService,

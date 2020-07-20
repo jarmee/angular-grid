@@ -43,15 +43,15 @@
           "columns": {
             "1": {
               "id": 1,
+              "title": "Virtueller PA alle Konten",
               "size": 6,
-              "title": "Test",
-              "data": null
+              "item": {}
             },
             "2": {
               "id": "2",
-              "size": 3,
-              "title": "Test",
-              "data": null
+              "title": "Virtueller PA alle Konten",
+              "size": 6,
+              "item": {}
             }
           },
           "order": [
@@ -65,20 +65,34 @@
           "columns": {
             "1": {
               "id": 1,
+              "title": "Anlage Miete Pro User",
+              "size": 6,
+              "item": {}
+            },
+            "2": {
+              "id": "2",
+              "title": "Virtueller PA alle Konten",
+              "size": 6,
+              "item": {}
+            },
+            "3": {
+              "id": "3",
+              "title": "Virtueller PA alle Konten",
               "size": 12,
-              "title": "Test",
-              "data": null
+              "item": {}
             }
           },
           "order": [
-            1
+            1,
+            "2",
+            "3"
           ],
-          "title": ""
+          "title": "Row #2"
         }
       },
       "order": [
-        "5",
-        "6"
+        "6",
+        "5"
       ]
     }
   ]

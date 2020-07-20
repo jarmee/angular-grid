@@ -6,7 +6,7 @@
   >
     <div class="row mt-5 mb-5 border-bottom">
       <ng-container *ngIf="isEditable; else showTitle">
-        <div class="col-12 d-inline-flex">
+        <div class="col-12 d-inline-flex p-0 m-0">
           <div class="mr-3 d-inline-flex align-items-center">
             <fa-icon class="text-grey-50 c-move" [icon]="faPen"></fa-icon>
           </div>
@@ -106,6 +106,8 @@
           'd-block': isEditable && !areColumnsAvailableIn(row),
           'd-none': !isEditable || areColumnsAvailableIn(row)
         }"
+        (cdkDropListEntered)="onColumnEnter($event)"
+        (cdkDropListExited)="onColumnExit($event)"
         (cdkDropListDropped)="onColumnDrop(row, $event)"
       ></app-column-dropzone>
     </app-row>

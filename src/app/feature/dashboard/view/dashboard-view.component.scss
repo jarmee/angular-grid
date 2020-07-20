@@ -21,3 +21,9 @@
 .dashboard-sidebar__width {
   width: 300px;
 }
+
+app-column-content-placeholder {
+  ::ng-deep .card {
+    width: 300px !important;
+  }
+}
