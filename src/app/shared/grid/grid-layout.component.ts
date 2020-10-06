@@ -35,7 +35,7 @@ const EMPTY_COLUMN: Column<any> = {
   size: null,
   title: null,
 };
-const DEFAULT_DIMENSION = 24;
+const DEFAULT_DIMENSION = 32;
 
 export interface EditableChanged<T> {
   editable: boolean;
@@ -208,6 +208,7 @@ function __removePositionTypeCssClasses(
   renderer.removeClass(elementRef.nativeElement, 'highlight-right');
   renderer.removeClass(elementRef.nativeElement, 'highlight-bottom');
   renderer.removeClass(elementRef.nativeElement, 'highlight-left');
+  renderer.removeClass(elementRef.nativeElement, 'highlight-center');
 }
 
 @Component({

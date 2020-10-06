@@ -71,7 +71,7 @@
 .highlight-top {
   app-column-content-placeholder {
     ::ng-deep .card {
-      border-top: 4px solid $info !important;
+      border-top: 2px solid $info !important;
     }
   }
 }
@@ -79,7 +79,7 @@
 .highlight-right {
   app-column-content-placeholder {
     ::ng-deep .card {
-      border-right: 4px solid $info !important;
+      border-right: 2px solid $info !important;
     }
   }
 }
@@ -87,7 +87,7 @@
 .highlight-bottom {
   app-column-content-placeholder {
     ::ng-deep .card {
-      border-bottom: 4px solid $info !important;
+      border-bottom: 2px solid $info !important;
     }
   }
 }
@@ -95,7 +95,15 @@
 .highlight-left {
   app-column-content-placeholder {
     ::ng-deep .card {
-      border-left: 4px solid $info !important;
+      border-left: 2px solid $info !important;
+    }
+  }
+}
+
+.highlight-center {
+  app-column-content-placeholder {
+    ::ng-deep .card {
+      border: 2px dotted $info !important;
     }
   }
 }

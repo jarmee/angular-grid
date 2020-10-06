@@ -44,26 +44,26 @@
             "2": {
               "id": "2",
               "title": "Col 1",
-              "size": 6,
+              "size": 4,
               "item": {}
             },
             "21": {
               "id": "21",
               "title": "Virtueller PA alle Konten",
-              "size": 6,
+              "size": 4,
               "item": {}
             },
             "211": {
               "id": "211",
               "title": "Anlage Miete Pro User",
-              "size": 6,
+              "size": 4,
               "item": {}
             }
           },
           "order": [
+            "2",
             "21",
-            "211",
-            "2"
+            "211"
           ],
           "title": "Row #1"
         }
