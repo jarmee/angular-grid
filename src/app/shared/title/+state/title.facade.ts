@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { initalState, TitleState } from './title.model';
+import { initialState, TitleState } from './title.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TitleFacade {
   private state$: BehaviorSubject<TitleState> = new BehaviorSubject<TitleState>(
-    initalState
+    initialState
   );
   title$: Observable<string> = this.state$.pipe(map(({ title }) => title));
 
